@@ -12,7 +12,7 @@ const estadoInicio = [
   {
     id: 2,
     tarea: "pruebados",
-    completado: false,
+    completado: true,
   },
   {
     id: 3,
@@ -46,11 +46,11 @@ import Swal from "sweetalert2";
 
 function App() {
   // TODO: revisar esto xk no lee localStorage
-  const getTareas = () =>{
-    const localTask = localStorage.getItem("tareas")
-    console.log(localTask)
-    return localTask
-  }
+  const getTareas = () => {
+    const localTask = localStorage.getItem("tareas");
+    console.log(localTask);
+    return localTask;
+  };
   const [tarea, setTarea] = useState("");
   const [tareas, setTareas] = useState(estadoInicio);
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -58,7 +58,10 @@ function App() {
   const [error, setError] = useState(null);
   const [mostrarCompletados, setMostrarCompletados] = useState(true);
   const [mostrarTodos, setMostrarTodos] = useState(true);
+  const [mostrarActivo, setMostrarActivo] = useState(true);
 
+  const [cuentaActivo, setCuentaActivo] = useState(0)
+  // setCuentaActivo(tareas.filter((tarea)=> tarea.completado).length)
 
   // useEffect(() => {
   //   const localTask = localStorage.getItem("tareas");
@@ -66,11 +69,16 @@ function App() {
   //     setTareas(JSON.parse(localTask));
   //   }
   // }, []);
-
+  let textTarea
+  {cuentaActivo==1 ? textTarea=" Tarea pendiente" : textTarea=" Tareas pendientes"}
   useEffect(() => {
     localStorage.setItem("tareas", JSON.stringify(tareas));
+    // contador de tareas pendientes
+    setCuentaActivo(tareas.filter((tarea)=>!tarea.completado).length)
   }, [tareas]);
 
+  useEffect(()=>{
+  },[])
   // console.log(tareas)
   const agregarTarea = (e) => {
     e.preventDefault();
@@ -88,9 +96,10 @@ function App() {
       return;
     }
     setTareas([{ id: Date.now(), tarea, completado: false }, ...tareas]);
-    console.log(tareas);
+    // console.log(tareas);
     setTarea("");
     setError(null);
+    
   };
 
   const eliminarTarea = (id) => {
@@ -99,8 +108,9 @@ function App() {
   };
 
   const editar = (item) => {
+    
     if (item.completado == true) {
-      console.log("tarea completada", item.tarea);
+      // console.log("tarea completada", item.tarea);
       Swal.fire({
         title: "Error!",
         text: "No puedes editar una tarea completada",
@@ -117,6 +127,7 @@ function App() {
   };
 
   const editarTarea = (e) => {
+    
     e.preventDefault();
     const inputTarea = tarea;
     if (!inputTarea.trim()) {
@@ -145,19 +156,46 @@ function App() {
 
   const completarTarea = (id) => {
     setTareas((tareas) =>
+
       tareas.map((tarea) =>
-        tarea.id === id ? { ...tarea, completado: !tarea.completado } : tarea
+        tarea.id === id ? { ...tarea, completado: !tarea.completado }  : tarea,
       )
     );
+
+    console.log(tareas)
   };
 
   const handleComplet = () => {
-    setMostrarCompletados(!mostrarCompletados);
+    setMostrarActivo(false);
+    setMostrarTodos(true);
+    setMostrarCompletados(true);
   };
 
   const handleClickTodo = () => {
-    setMostrarTodos(!mostrarTodos);
+    setMostrarTodos(true);
+    setMostrarCompletados(true);
+    setMostrarActivo(true);
   };
+
+  const handleActive = () => {
+    setMostrarTodos(false);
+    setMostrarCompletados(true);
+    setMostrarActivo(true);
+  };
+
+  const deleteCompleted= ()=> {
+    const estadoFiltrado = tareas.filter((elemento) => elemento.completado === false);
+    // console.log(estadoFiltrado);
+    setTareas(estadoFiltrado);
+  }
+  
+  // const completarTareab = (id) => {
+  //   setTareas((tareas) =>
+
+  //     tareas.map((tarea) =>
+  //       tarea.id === id ? { ...tarea, completado: !tarea.completado }  : tarea,
+  //     )
+  //   );
 
   return (
     <div className="container mt-5">
@@ -166,7 +204,7 @@ function App() {
       <div>
         <div>
           <h4 className="text-center">
-            {modoEdicion ? "Editar Tarea" : "Agregar Tarea"}
+            Agregar Tarea
           </h4>
           <form onSubmit={modoEdicion ? editarTarea : agregarTarea}>
             {error ? <span className="text-danger">{error}</span> : null}
@@ -178,26 +216,29 @@ function App() {
               value={tarea}
             />
             {modoEdicion ? (
-              <button className="btn btn-success btn-block" type="submit">
-                Guardar
-              </button>
-            ) : (
-              <button className="btn btn-secondary btn-block" type="submit">
-                Agregar
-              </button>
-            )}
+                <button className="btn btn-success btn-block" type="submit">
+                  Guardar
+                </button>
+              ) : (
+                <button className="btn btn-secondary btn-block" type="submit">
+                  Agregar
+                </button>
+              )}
           </form>
         </div>
         <div className="list-content mt-4">
           <ul className="list-group">
             {tareas.length === 0 ? (
-              <li className="list-group-item">Sin Tareas</li>
+              <li className="list-group-item w-50 mx-auto ">Sin Tareas</li>
             ) : (
               tareas.map((item) => (
                 <li
-                  className={`list-group-item w-75 mx-auto 
+                  className={`list-group-item w-50 mx-auto 
                 ${!mostrarTodos && item.completado ? "d-none" : "d-block"}
-                ${!mostrarCompletados && !item.completado ? "d-none" : "d-block"}
+                ${
+                  !mostrarCompletados && !item.completado ? "d-none" : "d-block"
+                }
+                ${!mostrarActivo && !item.completado ? "d-none" : "d-block"}
                 `}
                   key={item.id}
                 >
@@ -257,25 +298,52 @@ function App() {
                 </li>
               ))
             )}
-            <div className="w-50 text-center my-2">
+            <div className="text-center my-2">
+              <span className=" text-center mx-4">
+                {/* crear contador con tareas pendientes ✔*/}
+                {cuentaActivo}
+                {textTarea}</span>
               <span>Filtros: </span>
               <button
                 className={`sinStyles mx-2
-              ${!mostrarTodos ? "selected" : ""}
+                ${
+                  mostrarCompletados && mostrarTodos && mostrarActivo
+                    ? "selected"
+                    : ""
+                }
               `}
                 onClick={handleClickTodo}
               >
-                Todos / Activos
+                Todos
               </button>
               <button
                 className={`sinStyles
-              ${!mostrarCompletados ? "selected" : ""}
-              `}
+            ${
+              mostrarCompletados && mostrarTodos && !mostrarActivo
+                ? "selected"
+                : ""
+            }
+            `}
                 onClick={handleComplet}
               >
                 Completados
               </button>
+              <button
+                className={`sinStyles
+                ${!mostrarTodos && mostrarActivo ? "selected" : ""}
+                `}
+                onClick={handleActive}
+              >
+                Activos
+              </button>
+              {/* TODO: crear boton de eliminar completados */}
+              <button
+              className="sinStyles"
+              onClick={deleteCompleted}>
+                Eliminar completados
+              </button>
             </div>
+              
           </ul>
         </div>
       </div>
