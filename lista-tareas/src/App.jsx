@@ -1,56 +1,36 @@
-// import { useState } from "react";
-// import "./App.css";
-// import Formulario from "./components/Formulario";
-// import Tareas from "./components/Tareas";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const estadoInicio = [
   {
     id: 1,
     tarea: "prueba1",
     completado: false,
+    gravedad: 'low'
   },
   {
     id: 2,
     tarea: "pruebados",
     completado: true,
+    gravedad: 'medium'
   },
   {
     id: 3,
     tarea: "otraMas",
     completado: true,
+    gravedad: 'hight'
   },
 ];
 
-// export default function App() {
-//   const [tareas, setTareas] = useState(estadoInicio)
 
-//   const añadirTarea = (tarea) =>{
-//     console.log("tarea::::::",tarea)
-//     setTareas([tarea,...tareas])
-//     // console.log("tareasssss::::::",tareas)
-//   }
-
-//   return (
-//     <>
-//       <section className="container">
-//         <h1>Lista de tareas</h1>
-//         <Formulario  añadirTarea={añadirTarea}/>
-//         <Tareas tareas={tareas} />
-//       </section>
-//     </>
-//   );
-// }
-
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 
 function App() {
   // TODO: revisar esto xk no lee localStorage
-  const getTareas = () => {
-    const localTask = localStorage.getItem("tareas");
-    console.log(localTask);
-    return localTask;
-  };
+  // const getTareas = () => {
+  //   const localTask = localStorage.getItem("tareas");
+  //   console.log(localTask);
+  //   return localTask;
+  // };
   const [tarea, setTarea] = useState("");
   const [tareas, setTareas] = useState(estadoInicio);
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -59,26 +39,17 @@ function App() {
   const [mostrarCompletados, setMostrarCompletados] = useState(true);
   const [mostrarTodos, setMostrarTodos] = useState(true);
   const [mostrarActivo, setMostrarActivo] = useState(true);
-
-  const [cuentaActivo, setCuentaActivo] = useState(0)
-  // setCuentaActivo(tareas.filter((tarea)=> tarea.completado).length)
-
-  // useEffect(() => {
-  //   const localTask = localStorage.getItem("tareas");
-  //   if (localTask) {
-  //     setTareas(JSON.parse(localTask));
-  //   }
-  // }, []);
-  let textTarea
-  {cuentaActivo==1 ? textTarea=" Tarea pendiente" : textTarea=" Tareas pendientes"}
+  const [cuentaActivo, setCuentaActivo] = useState(0);
+  
+  let textTarea = " Tareas pendientes";
+  cuentaActivo == 1 ? (textTarea = " Tarea pendiente") : textTarea
+  
   useEffect(() => {
     localStorage.setItem("tareas", JSON.stringify(tareas));
     // contador de tareas pendientes
-    setCuentaActivo(tareas.filter((tarea)=>!tarea.completado).length)
+    setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
   }, [tareas]);
 
-  useEffect(()=>{
-  },[])
   // console.log(tareas)
   const agregarTarea = (e) => {
     e.preventDefault();
@@ -99,7 +70,6 @@ function App() {
     // console.log(tareas);
     setTarea("");
     setError(null);
-    
   };
 
   const eliminarTarea = (id) => {
@@ -108,7 +78,6 @@ function App() {
   };
 
   const editar = (item) => {
-    
     if (item.completado == true) {
       // console.log("tarea completada", item.tarea);
       Swal.fire({
@@ -127,7 +96,6 @@ function App() {
   };
 
   const editarTarea = (e) => {
-    
     e.preventDefault();
     const inputTarea = tarea;
     if (!inputTarea.trim()) {
@@ -156,13 +124,12 @@ function App() {
 
   const completarTarea = (id) => {
     setTareas((tareas) =>
-
       tareas.map((tarea) =>
-        tarea.id === id ? { ...tarea, completado: !tarea.completado }  : tarea,
+        tarea.id === id ? { ...tarea, completado: !tarea.completado } : tarea
       )
     );
 
-    console.log(tareas)
+    console.log(tareas);
   };
 
   const handleComplet = () => {
@@ -183,29 +150,23 @@ function App() {
     setMostrarActivo(true);
   };
 
-  const deleteCompleted= ()=> {
-    const estadoFiltrado = tareas.filter((elemento) => elemento.completado === false);
+  const deleteCompleted = () => {
+    const estadoFiltrado = tareas.filter(
+      (elemento) => elemento.completado === false
+    );
     // console.log(estadoFiltrado);
     setTareas(estadoFiltrado);
-  }
-  
-  // const completarTareab = (id) => {
-  //   setTareas((tareas) =>
-
-  //     tareas.map((tarea) =>
-  //       tarea.id === id ? { ...tarea, completado: !tarea.completado }  : tarea,
-  //     )
-  //   );
+  };
 
   return (
+    // HEAD
     <div className="container mt-5">
       <h1 className="text-center">TAREAS</h1>
       <hr />
       <div>
-        <div>
-          <h4 className="text-center">
-            Agregar Tarea
-          </h4>
+        {/* FORM para editar y agregar tareas */}
+        <div> 
+          <h4 className="text-center">Agregar Tarea</h4>
           <form onSubmit={modoEdicion ? editarTarea : agregarTarea}>
             {error ? <span className="text-danger">{error}</span> : null}
             <input
@@ -215,40 +176,35 @@ function App() {
               onChange={(e) => setTarea(e.target.value)}
               value={tarea}
             />
-            {modoEdicion ? (
-                <button className="btn btn-success btn-block" type="submit">
-                  Guardar
-                </button>
-              ) : (
-                <button className="btn btn-secondary btn-block" type="submit">
-                  Agregar
-                </button>
-              )}
+              <button className="btn btn-success btn-block" type="submit">
+              {modoEdicion ? ("Guardar" ): ("Agregar")}
+              </button>
           </form>
+          {/* END FORM */}
         </div>
+        {/* List todos */}
         <div className="list-content mt-4">
           <ul className="list-group">
             {tareas.length === 0 ? (
               <li className="list-group-item w-50 mx-auto ">Sin Tareas</li>
             ) : (
               tareas.map((item) => (
-                <li
-                  className={`list-group-item w-50 mx-auto 
+                // Visualizacion filtros
+                <li className={`list-group-item w-50 mx-auto 
                 ${!mostrarTodos && item.completado ? "d-none" : "d-block"}
-                ${
-                  !mostrarCompletados && !item.completado ? "d-none" : "d-block"
-                }
+                ${!mostrarCompletados && !item.completado ? "d-none" : "d-block"}
                 ${!mostrarActivo && !item.completado ? "d-none" : "d-block"}
                 `}
                   key={item.id}
                 >
+                  {/* completado */}
                   <div className="checkbox-wrapper-31">
                     <input
                       id={`completado-${item.id}`}
                       checked={item.completado}
                       type="checkbox"
-                      onChange={() => completarTarea(item.id)}
-                    ></input>
+                      onChange={() => completarTarea(item.id)}/>
+                      {/* icono checkbox */}
                     <svg viewBox="0 0 35.6 35.6">
                       <circle
                         className="background"
@@ -281,6 +237,7 @@ function App() {
                       item.tarea
                     )}
                   </label>
+                  {/* boton eliminar y editar */}
                   <div className="control">
                     <button
                       className="btn btn-warning mx-2"
@@ -300,50 +257,49 @@ function App() {
             )}
             <div className="text-center my-2">
               <span className=" text-center mx-4">
-                {/* crear contador con tareas pendientes ✔*/}
+                {/* contador con tareas pendientes ✔*/}
                 {cuentaActivo}
-                {textTarea}</span>
+                {textTarea}
+              </span>
               <span>Filtros: </span>
+              {/* Filtros: Todos */}
               <button
                 className={`sinStyles mx-2
-                ${
-                  mostrarCompletados && mostrarTodos && mostrarActivo
-                    ? "selected"
-                    : ""
-                }
-              `}
-                onClick={handleClickTodo}
-              >
-                Todos
-              </button>
-              <button
-                className={`sinStyles
-            ${
-              mostrarCompletados && mostrarTodos && !mostrarActivo
-                ? "selected"
-                : ""
-            }
-            `}
-                onClick={handleComplet}
-              >
-                Completados
-              </button>
-              <button
-                className={`sinStyles
-                ${!mostrarTodos && mostrarActivo ? "selected" : ""}
+                  ${mostrarCompletados && mostrarTodos && mostrarActivo
+                      ? "selected"
+                      : ""
+                    }
                 `}
-                onClick={handleActive}
-              >
-                Activos
+                onClick={handleClickTodo}
+                >Todos
               </button>
-              {/* TODO: crear boton de eliminar completados */}
+
+              {/* Filtro completados */}
               <button
-              className="sinStyles"
-              onClick={deleteCompleted}>
+                className={`sinStyles
+                  ${mostrarCompletados && mostrarTodos && !mostrarActivo
+                      ? "selected"
+                      : ""
+                    }
+                `}
+                onClick={handleComplet}
+                > Completados
+              </button>
+
+              {/* Filtro Activos */}
+              <button
+                  className={`sinStyles
+                  ${!mostrarTodos && mostrarActivo ? "selected" : ""}
+                  `}
+                  onClick={handleActive}
+                > Activos
+              </button>
+
+              {/* Eliminar completados */}
+              <button className="sinStyles" onClick={deleteCompleted}>
                 Eliminar completados
               </button>
             </div>
-              
           </ul>
         </div>
       </div>
