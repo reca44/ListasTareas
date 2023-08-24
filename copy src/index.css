@@ -187,13 +187,3 @@ button.sinStyles.selected{
 .checkbox-wrapper-31 input[type="checkbox"]:checked + svg .check {
   stroke-dashoffset: 0;
 }
-
-.transparent{
-  border: none;      
-  outline: none;     
-  background: none;  
-  padding: 0;          
-  fontSize: inherit; 
-  width: 100%;
-  color: white;
-}

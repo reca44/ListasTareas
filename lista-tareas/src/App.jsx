@@ -1,309 +1,227 @@
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-
-const estadoInicio = [
-  {
-    id: 1,
-    tarea: "prueba1",
-    completado: false,
-    gravedad: 'low'
-  },
-  {
-    id: 2,
-    tarea: "pruebados",
-    completado: true,
-    gravedad: 'medium'
-  },
-  {
-    id: 3,
-    tarea: "otraMas",
-    completado: true,
-    gravedad: 'hight'
-  },
-];
-
-
+import { useEffect, useState } from 'react';
+import TaskForm from './components/TaskForm';
+import TaskList from './components/TaskList';
+import Filters from './components/Filters';
+import TaskCounter from './components/TaskCounter';
+import './App.css';
+// import Swal from 'sweetalert2';
 
 function App() {
-  // TODO: revisar esto xk no lee localStorage
-  // const getTareas = () => {
-  //   const localTask = localStorage.getItem("tareas");
-  //   console.log(localTask);
-  //   return localTask;
-  // };
-  const [tarea, setTarea] = useState("");
+  const estadoInicio = [
+    {
+      id: 1,
+      tarea: "prueba1",
+      completado: false,
+      priority: 'low'
+    },
+    {
+      id: 2,
+      tarea: "pruebados",
+      completado: true,
+      priority: 'medium'
+    },
+    {
+      id: 3,
+      tarea: "otraMas",
+      completado: true,
+      priority: 'hight'
+    },
+  ];
+    {/* TODO: intentar crear un componente de filtros */}
   const [tareas, setTareas] = useState(estadoInicio);
-  const [modoEdicion, setModoEdicion] = useState(false);
-  const [id, setId] = useState("");
-  const [error, setError] = useState(null);
-  const [mostrarCompletados, setMostrarCompletados] = useState(true);
-  const [mostrarTodos, setMostrarTodos] = useState(true);
-  const [mostrarActivo, setMostrarActivo] = useState(true);
+  const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
-  
   let textTarea = " Tareas pendientes";
   cuentaActivo == 1 ? (textTarea = " Tarea pendiente") : textTarea
   
   useEffect(() => {
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+    // TODO: guardar en localStorage o bd
+    // localStorage.setItem("tareas", JSON.stringify(tareas));
     // contador de tareas pendientes
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
   }, [tareas]);
 
-  // console.log(tareas)
-  const agregarTarea = (e) => {
-    e.preventDefault();
-    const inputTarea = tarea;
-    if (!inputTarea.trim()) {
-      console.log("datos incorrectos", inputTarea);
-      Swal.fire({
-        title: "Error!",
-        text: "tienes que añadir una tarea",
-        icon: "error",
-        color: "#EDF0F3",
-        background: "#222323",
-        confirmButtonColor: "#1AB3E6",
-      });
-      return;
-    }
-    setTareas([{ id: Date.now(), tarea, completado: false }, ...tareas]);
-    // console.log(tareas);
-    setTarea("");
-    setError(null);
+
+  // Función para agregar tarea
+  const agregarTarea = (nuevaTarea) => {
+    setTareas([nuevaTarea, ...tareas]);
   };
 
-  const eliminarTarea = (id) => {
-    const arrayFiltrado = tareas.filter((item) => item.id !== id);
+  // Función para Editar tarea
+    const editarTarea = (tareaEditada) => {
+      const arrayEditado = tareas.map((item) =>
+      item.id === tareaEditada.id ? tareaEditada : item
+      );
+      setTareas(arrayEditado);
+      // console.log("TareaEditada", tareaEditada);
+      // console.log("arrayEditado:::", arrayEditado);
+  };
+
+
+  // Función para eliminar tarea
+  const eliminarTarea = (idTarea) => {
+    const arrayFiltrado = tareas.filter((item) => item.id !== idTarea);
     setTareas(arrayFiltrado);
+    //  mostrarNotificacion("success", "Tarea eliminada con éxito");
   };
 
-  const editar = (item) => {
-    if (item.completado == true) {
-      // console.log("tarea completada", item.tarea);
-      Swal.fire({
-        title: "Error!",
-        text: "No puedes editar una tarea completada",
-        icon: "error",
-        color: "#EDF0F3",
-        background: "#222323",
-        confirmButtonColor: "#1AB3E6",
-      });
-      return;
-    }
-    setModoEdicion(true);
-    setTarea(item.tarea);
-    setId(item.id);
-  };
-
-  const editarTarea = (e) => {
-    e.preventDefault();
-    const inputTarea = tarea;
-    if (!inputTarea.trim()) {
-      console.log("datos incorrectos", inputTarea);
-      Swal.fire({
-        title: "Error!",
-        text: "tienes que añadir una tarea",
-        icon: "error",
-        color: "#EDF0F3",
-        background: "#222323",
-        confirmButtonColor: "#1AB3E6",
-      });
-      return;
-    }
-
-    const arrayEditado = tareas.map((item) =>
-      item.id === id ? { id, tarea } : item
-    );
-    // console.log(arrayEditado)
-    setTareas(arrayEditado);
-    setModoEdicion(false);
-    setTarea("");
-    setId("");
-    setError(null);
-  };
-
-  const completarTarea = (id) => {
+  // Función para completar tarea
+  const completarTarea = (idTarea) => {
     setTareas((tareas) =>
       tareas.map((tarea) =>
-        tarea.id === id ? { ...tarea, completado: !tarea.completado } : tarea
+        tarea.id === idTarea ? { ...tarea, completado: !tarea.completado } : tarea
       )
     );
+  };
 
-    console.log(tareas);
+
+  const tareasFiltradas = tareas.filter((item) => {
+    if (filtro === 'todos') return true;
+    if (filtro === 'completados') return item.completado;
+    if (filtro === 'activos') return !item.completado;
+  });
+
+  const handleClickTodo = () => {
+    setFiltro('todos');
   };
 
   const handleComplet = () => {
-    setMostrarActivo(false);
-    setMostrarTodos(true);
-    setMostrarCompletados(true);
-  };
-
-  const handleClickTodo = () => {
-    setMostrarTodos(true);
-    setMostrarCompletados(true);
-    setMostrarActivo(true);
+    setFiltro('completados');
   };
 
   const handleActive = () => {
-    setMostrarTodos(false);
-    setMostrarCompletados(true);
-    setMostrarActivo(true);
+    setFiltro('activos');
   };
 
   const deleteCompleted = () => {
     const estadoFiltrado = tareas.filter(
       (elemento) => elemento.completado === false
     );
-    // console.log(estadoFiltrado);
     setTareas(estadoFiltrado);
+    // console.log(estadoFiltrado);
   };
 
+
   return (
-    // HEAD
     <div className="container mt-5">
-      <h1 className="text-center">TAREAS</h1>
-      <hr />
+      {/* Encabezado y formulario */}
       <div>
-        {/* FORM para editar y agregar tareas */}
-        <div> 
-          <h4 className="text-center">Agregar Tarea</h4>
-          <form onSubmit={modoEdicion ? editarTarea : agregarTarea}>
-            {error ? <span className="text-danger">{error}</span> : null}
-            <input
-              type="text"
-              className="form-control w-50"
-              placeholder="Introduce Tarea"
-              onChange={(e) => setTarea(e.target.value)}
-              value={tarea}
-            />
-              <button className="btn btn-success btn-block" type="submit">
-              {modoEdicion ? ("Guardar" ): ("Agregar")}
-              </button>
-          </form>
-          {/* END FORM */}
-        </div>
-        {/* List todos */}
-        <div className="list-content mt-4">
-          <ul className="list-group">
-            {tareas.length === 0 ? (
-              <li className="list-group-item w-50 mx-auto ">Sin Tareas</li>
-            ) : (
-              tareas.map((item) => (
-                // Visualizacion filtros
-                <li className={`list-group-item w-50 mx-auto 
-                ${!mostrarTodos && item.completado ? "d-none" : "d-block"}
-                ${!mostrarCompletados && !item.completado ? "d-none" : "d-block"}
-                ${!mostrarActivo && !item.completado ? "d-none" : "d-block"}
-                `}
-                  key={item.id}
-                >
-                  {/* completado */}
-                  <div className="checkbox-wrapper-31">
-                    <input
-                      id={`completado-${item.id}`}
-                      checked={item.completado}
-                      type="checkbox"
-                      onChange={() => completarTarea(item.id)}/>
-                      {/* icono checkbox */}
-                    <svg viewBox="0 0 35.6 35.6">
-                      <circle
-                        className="background"
-                        cx="17.8"
-                        cy="17.8"
-                        r="17.8"
-                      ></circle>
-                      <circle
-                        className="stroke"
-                        cx="17.8"
-                        cy="17.8"
-                        r="14.37"
-                      ></circle>
-                      <polyline
-                        className="check"
-                        points="11.78 18.12 15.55 22.23 25.17 12.87"
-                      ></polyline>
-                    </svg>
-                  </div>
-
-                  <label
-                    htmlFor={`completado-${item.id}`}
-                    className="lead px-2"
-                  >
-                    {item.completado ? (
-                      <span style={{ textDecoration: "line-through" }}>
-                        {item.tarea}
-                      </span>
-                    ) : (
-                      item.tarea
-                    )}
-                  </label>
-                  {/* boton eliminar y editar */}
-                  <div className="control">
-                    <button
-                      className="btn btn-warning mx-2"
-                      onClick={() => editar(item)}
-                    >
-                      ✏
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => eliminarTarea(item.id)}
-                    >
-                      ❌
-                    </button>
-                  </div>
-                </li>
-              ))
-            )}
-            <div className="text-center my-2">
-              <span className=" text-center mx-4">
-                {/* contador con tareas pendientes ✔*/}
-                {cuentaActivo}
-                {textTarea}
-              </span>
-              <span>Filtros: </span>
-              {/* Filtros: Todos */}
-              <button
-                className={`sinStyles mx-2
-                  ${mostrarCompletados && mostrarTodos && mostrarActivo
-                      ? "selected"
-                      : ""
-                    }
-                `}
-                onClick={handleClickTodo}
-                >Todos
-              </button>
-
-              {/* Filtro completados */}
-              <button
-                className={`sinStyles
-                  ${mostrarCompletados && mostrarTodos && !mostrarActivo
-                      ? "selected"
-                      : ""
-                    }
-                `}
-                onClick={handleComplet}
-                > Completados
-              </button>
-
-              {/* Filtro Activos */}
-              <button
-                  className={`sinStyles
-                  ${!mostrarTodos && mostrarActivo ? "selected" : ""}
-                  `}
-                  onClick={handleActive}
-                > Activos
-              </button>
-
-              {/* Eliminar completados */}
-              <button className="sinStyles" onClick={deleteCompleted}>
-                Eliminar completados
-              </button>
-            </div>
-          </ul>
-        </div>
+        {/* Componente añadir tareas */}
+        <TaskForm onAddTask={agregarTarea} />
+        
+        {/* Componente Listado tareas */}
+        <TaskList
+          tareas={tareasFiltradas}
+          onDeleteTask={eliminarTarea}
+          onEditTask={editarTarea}
+          onToggleComplete={completarTarea}
+        />
+        {/* Componente Filtros */}
+        <Filters
+          filtro={filtro}
+          onClickTodo={handleClickTodo}
+          onClickComplet={handleComplet}
+          onClickActive={handleActive}
+          onClickDelete={deleteCompleted}
+        />
+        {/* Componente con tareas pendientes*/}
+        <TaskCounter cuentaActivo={cuentaActivo} />
+        {/* TODO: revisar notificacion */}
+        {/* <Notification type={notificacion.type} message={notificacion.message} /> */}
       </div>
     </div>
   );
 }
+
 export default App;
+// {/* Filtros */}
+// <span>Filtros: </span>
+// {/* Filtros: Todos */}
+// <button
+//   className={`sinStyles mx-2
+//     ${filtro=== "todos"
+//         ? "selected"
+//         : ""
+//       }
+//   `}
+//   onClick={handleClickTodo}
+//   >Todos
+// </button>
+
+// {/* Filtro completados */}
+// <button
+//   className={`sinStyles
+//     ${filtro=== "completados"
+//         ? "selected"
+//         : ""
+//       }
+//   `}
+//   onClick={handleComplet}
+//   > Completados
+// </button>
+
+// {/* Filtro Activos */}
+// <button
+//     className={`sinStyles
+//     ${filtro=== "activos" 
+//           ? "selected"
+//           : ""}
+//     `}
+//     onClick={handleActive}
+//   > Activos
+// </button>
+
+// {/* Eliminar completados */}
+// <button className="sinStyles" onClick={deleteCompleted}>
+//   Eliminar completados
+// </button>
+
+
+
+
+
+            // const [error, setError] = useState(null);
+          // const [notificacion, setNotificacion] = useState({ type: null, message: '' });
+          // Función para mostrar notificaciones
+          // const mostrarNotificacion = (type, message) => {
+          //   setNotificacion({ type, message });
+          // };
+
+        {/* FORM antes de componente para editar y agregar tareas */}
+        {/* <div> 
+          <h4 className="text-center">Agregar Tarea</h4>
+          <form onSubmit={modoEdicion ? editarTarea : agregarTarea}>
+            {error ? <span className="text-danger">{error}</span> : null}
+            <input
+            type="text"
+            className="form-control w-50"
+            placeholder="Introduce Tarea"
+            onChange={(e) => setTarea(e.target.value)}
+            value={tarea}
+            />
+            <button className="btn btn-success btn-block" type="submit">
+            {modoEdicion ? ("Guardar" ): ("Agregar")}
+            </button>
+          </form></div>
+          {/* END FORM */}
+           // Metodo para add TODO antes de ser componente
+  // const agregarTarea = (e) => {
+  //   e.preventDefault();
+  //   const inputTarea = tarea;
+  //   if (!inputTarea.trim()) {
+  //     console.log("datos incorrectos", inputTarea);
+  //     Swal.fire({
+  //       title: "Error!",
+  //       text: "tienes que añadir una tarea",
+  //       icon: "error",
+  //       color: "#EDF0F3",
+  //       background: "#222323",
+  //       confirmButtonColor: "#1AB3E6",
+  //     });
+  //     return;
+  //   }
+  //   setTareas([{ id: Date.now(), tarea, completado: false }, ...tareas]);
+  //   // console.log(tareas);
+  //   setTarea("");
+  //   setError(null);
+  // };

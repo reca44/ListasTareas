@@ -4,7 +4,7 @@ import { useState } from "react";
 
     export default function Tareas({ tareas }) {
         const [readOnly, setRead] = useState(true)
-        const [tarea, setTarea] = React.useState('')
+        const [tarea, setTarea] = useState('')
         // const [tareas, setTareas] = React.useState([])
 
         // const handleDouble = (e) => {
