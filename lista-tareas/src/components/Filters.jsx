@@ -1,5 +1,5 @@
 const Filters = ({ filtro, onClickTodo, onClickComplet, onClickActive, onClickDelete }) => {
-    console.log("Filtro: ",filtro)
+    // console.log("Filtro: ",filtro)
     return (
         <>
         <span>Filtros: </span>

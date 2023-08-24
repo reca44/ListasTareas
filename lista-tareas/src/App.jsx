@@ -3,7 +3,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import Filters from './components/Filters';
 import TaskCounter from './components/TaskCounter';
-import './App.css';
+// import './App.css';
 // import Swal from 'sweetalert2';
 
 function App() {
@@ -11,23 +11,26 @@ function App() {
     {
       id: 1,
       tarea: "prueba1",
+      contenido: "contenido tarea prueba1 tatatatat",
       completado: false,
       priority: 'low'
     },
     {
       id: 2,
       tarea: "pruebados",
+      contenido: "contenido tarea pruebados tatatatat",
       completado: true,
       priority: 'medium'
     },
     {
       id: 3,
       tarea: "otraMas",
+      contenido: "contenido tarea otraMas tatatatat",
       completado: true,
       priority: 'hight'
     },
   ];
-    {/* TODO: intentar crear un componente de filtros */}
+
   const [tareas, setTareas] = useState(estadoInicio);
   const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
@@ -49,6 +52,7 @@ function App() {
 
   // Función para Editar tarea
     const editarTarea = (tareaEditada) => {
+
       const arrayEditado = tareas.map((item) =>
       item.id === tareaEditada.id ? tareaEditada : item
       );
@@ -56,7 +60,6 @@ function App() {
       // console.log("TareaEditada", tareaEditada);
       // console.log("arrayEditado:::", arrayEditado);
   };
-
 
   // Función para eliminar tarea
   const eliminarTarea = (idTarea) => {
@@ -73,7 +76,6 @@ function App() {
       )
     );
   };
-
 
   const tareasFiltradas = tareas.filter((item) => {
     if (filtro === 'todos') return true;
