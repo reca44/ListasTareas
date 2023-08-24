@@ -1,4 +1,11 @@
+import * as React from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import { useState } from "react";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
 const TaskForm = ({ onAddTask }) => {
 const [titulo, setTitulo] = useState("");
@@ -20,6 +27,17 @@ const handleSubmit = (e) => {
     setTarea(""); // Vaciar el input
     setTitulo("");
     setPriority("")
+    setOpen(true);
+};
+const [open, setOpen] = useState(false);
+
+
+const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+    return;
+    }
+
+    setOpen(false);
 };
 
 return (
@@ -50,7 +68,13 @@ return (
     <button className="btn btn-success btn-block" type="submit">
         Agregar
     </button>
+    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        Tarea añadida!
+        </Alert>
+    </Snackbar>
     </form>
+    
 );
 };
 

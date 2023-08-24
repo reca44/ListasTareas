@@ -3,6 +3,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import Filters from './components/Filters';
 import TaskCounter from './components/TaskCounter';
+import MyAlerts from './components/MyAlerts'
 // import './App.css';
 // import Swal from 'sweetalert2';
 
@@ -81,6 +82,9 @@ function App() {
     if (filtro === 'todos') return true;
     if (filtro === 'completados') return item.completado;
     if (filtro === 'activos') return !item.completado;
+    if (filtro === 'hight') return item.priority==='hight';
+    if (filtro === 'medium') return item.priority==='medium';
+    if (filtro === 'low') return item.priority==='low';
   });
 
   const handleClickTodo = () => {
@@ -93,6 +97,15 @@ function App() {
 
   const handleActive = () => {
     setFiltro('activos');
+  };
+  const handleHight = () => {
+    setFiltro('hight');
+  };
+  const handleMedium = () => {
+    setFiltro('medium');
+  };
+  const handleLow = () => {
+    setFiltro('low');
   };
 
   const deleteCompleted = () => {
@@ -124,10 +137,14 @@ function App() {
           onClickTodo={handleClickTodo}
           onClickComplet={handleComplet}
           onClickActive={handleActive}
+          onClickHight={handleHight}
+          onClickMedium={handleMedium}
+          onClickLow={handleLow}
           onClickDelete={deleteCompleted}
         />
         {/* Componente con tareas pendientes*/}
         <TaskCounter cuentaActivo={cuentaActivo} />
+        {/* <MyAlerts /> */}
         {/* TODO: revisar notificacion */}
         {/* <Notification type={notificacion.type} message={notificacion.message} /> */}
       </div>
@@ -188,28 +205,6 @@ export default App;
           // const mostrarNotificacion = (type, message) => {
           //   setNotificacion({ type, message });
           // };
-
-        {/* FORM antes de componente para editar y agregar tareas */}
-        {/* <div> 
-          <h4 className="text-center">Agregar Tarea</h4>
-          <form onSubmit={modoEdicion ? editarTarea : agregarTarea}>
-            {error ? <span className="text-danger">{error}</span> : null}
-            <input
-            type="text"
-            className="form-control w-50"
-            placeholder="Introduce Tarea"
-            onChange={(e) => setTarea(e.target.value)}
-            value={tarea}
-            />
-            <button className="btn btn-success btn-block" type="submit">
-            {modoEdicion ? ("Guardar" ): ("Agregar")}
-            </button>
-          </form></div>
-          {/* END FORM */}
-           // Metodo para add TODO antes de ser componente
-  // const agregarTarea = (e) => {
-  //   e.preventDefault();
-  //   const inputTarea = tarea;
   //   if (!inputTarea.trim()) {
   //     console.log("datos incorrectos", inputTarea);
   //     Swal.fire({
@@ -222,8 +217,3 @@ export default App;
   //     });
   //     return;
   //   }
-  //   setTareas([{ id: Date.now(), tarea, completado: false }, ...tareas]);
-  //   // console.log(tareas);
-  //   setTarea("");
-  //   setError(null);
-  // };

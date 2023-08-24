@@ -1,10 +1,32 @@
 import { useState } from "react";
 import MySvg from "./MySvg";
+import * as React from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
 const TaskList = ({ tareas, onDeleteTask, onEditTask, onToggleComplete, filtro }) => {
 const [editingItemId, setEditingItemId] = useState(null);
+const [open, setOpen] = useState(false);
+const [snackbarMessage, setSnackbarMessage] = useState("");
+const [snackbarSeverity, setSnackSeverity] = useState("");
 // console.log(editingItemId)
+const handleClick = (message,snackbarSeverity) => {
+    setSnackbarMessage(message)
+    setSnackSeverity(snackbarSeverity)
+    setOpen(true);
+};
 
+const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+    return;
+    }
+
+    setOpen(false);
+};
 
 return (
     <ul className="list-group">
@@ -87,7 +109,7 @@ return (
             {editingItemId === item.id ? (
             <button
                 className="btn btn-success mx-2"
-                onClick={() => setEditingItemId(null)}
+                onClick={() => {setEditingItemId(null); handleClick("Tarea Actualizada","success");}}
             >
                 Guardar
             </button>
@@ -98,16 +120,23 @@ return (
                     if (!item.completado) { // Verifica si la tarea no está completada
                         // TODO: lanzar notificacion
                         setEditingItemId(item.id);
+                    }else{
+                        handleClick("No puedes editar una tarea completada","error")
                     }
                     }}
                 >
                 Editar
             </button>
             )}
-            <button className="btn btn-danger" onClick={() => onDeleteTask(item.id)}>
+            <button className="btn btn-danger" onClick={() => { handleClick("Tarea Eliminada","warning"); onDeleteTask(item.id); }}>
             ❌
             </button>
         </div>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={snackbarSeverity} sx={{ width: "100%" }}>
+                {snackbarMessage}
+            </Alert>
+        </Snackbar>
         </li>
     ))}
     </ul>
