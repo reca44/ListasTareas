@@ -67,11 +67,11 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
-body {
+/* body {
   color: #f2ebdf;
   background-color: #222323;
   -webkit-tap-highlight-color: transparent;
-}
+} */
 form {
   display: flex;
   flex-direction: row;
@@ -86,7 +86,7 @@ form {
 .sinStyles{
 
   font-size: 30px;
-  color: #949494;
+  /* color: #949494; */
   transition: color .2s ease-out;
   border: 0;
   background: none;
@@ -103,12 +103,12 @@ form {
 button.sinStyles:hover{
   border-radius: 5px;
   border: 1px #bd9009 solid;
-  color: #f2ebdf;
+  /* color: #f2ebdf; */
 }
 button.sinStyles.selected{
   border-radius: 5px;
   border: 1px #bd9009 solid;
-  color: #f2ebdf;
+
 }
 
 .list-group-item+.list-group-item {
@@ -116,10 +116,10 @@ button.sinStyles.selected{
 }
 
 .list-group-item {
-  color: #f2ebdf;
+  /* color: #f2ebdf; */
   text-decoration-color: initial;
-  background-color: #222323;
-  border: solid #474a4a;
+  /* background-color: #222323; */
+  /* border: solid #474a4a; */
   display: block;
   align-items: center;
 }
@@ -195,5 +195,15 @@ button.sinStyles.selected{
   padding: 0;          
   fontSize: inherit; 
   width: 100%;
-  color: white;
+  color: none;
+}
+.dark-theme input {
+  color: #ffffff; /* Color de texto en modo oscuro */
+  background-color: #121212; /* Color de fondo en modo oscuro */
+}
+
+/* Estilos para el tema claro */
+.light-theme input {
+  color: #000000; /* Color de texto en modo claro */
+  background-color: #F5F5F5; /* Color de fondo en modo claro */
 }

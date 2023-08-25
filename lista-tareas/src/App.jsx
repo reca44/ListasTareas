@@ -3,9 +3,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import Filters from './components/Filters';
 import TaskCounter from './components/TaskCounter';
-import MyAlerts from './components/MyAlerts'
-// import './App.css';
-// import Swal from 'sweetalert2';
+
 
 function App() {
   const estadoInicio = [
@@ -39,9 +37,6 @@ function App() {
   cuentaActivo == 1 ? (textTarea = " Tarea pendiente") : textTarea
   
   useEffect(() => {
-    // TODO: guardar en localStorage o bd
-    // localStorage.setItem("tareas", JSON.stringify(tareas));
-    // contador de tareas pendientes
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
   }, [tareas]);
 
@@ -52,14 +47,12 @@ function App() {
   };
 
   // Función para Editar tarea
-    const editarTarea = (tareaEditada) => {
-
-      const arrayEditado = tareas.map((item) =>
-      item.id === tareaEditada.id ? tareaEditada : item
-      );
-      setTareas(arrayEditado);
-      // console.log("TareaEditada", tareaEditada);
-      // console.log("arrayEditado:::", arrayEditado);
+  const editarTarea = (tareaEditada) => {
+    const arrayEditado = tareas.map((item) =>
+    item.id === tareaEditada.id ? tareaEditada : item);
+    setTareas(arrayEditado);
+    // console.log("TareaEditada", tareaEditada);
+    // console.log("arrayEditado:::", arrayEditado);
   };
 
   // Función para eliminar tarea
@@ -116,14 +109,13 @@ function App() {
     // console.log(estadoFiltrado);
   };
 
-
   return (
     <div className="container mt-5">
       {/* Encabezado y formulario */}
       <div>
         {/* Componente añadir tareas */}
         <TaskForm onAddTask={agregarTarea} />
-        
+
         {/* Componente Listado tareas */}
         <TaskList
           tareas={tareasFiltradas}
@@ -131,6 +123,7 @@ function App() {
           onEditTask={editarTarea}
           onToggleComplete={completarTarea}
         />
+
         {/* Componente Filtros */}
         <Filters
           filtro={filtro}
@@ -142,10 +135,9 @@ function App() {
           onClickLow={handleLow}
           onClickDelete={deleteCompleted}
         />
+
         {/* Componente con tareas pendientes*/}
         <TaskCounter cuentaActivo={cuentaActivo} />
-        {/* <MyAlerts /> */}
-        {/* TODO: revisar notificacion */}
         {/* <Notification type={notificacion.type} message={notificacion.message} /> */}
       </div>
     </div>
@@ -153,67 +145,3 @@ function App() {
 }
 
 export default App;
-// {/* Filtros */}
-// <span>Filtros: </span>
-// {/* Filtros: Todos */}
-// <button
-//   className={`sinStyles mx-2
-//     ${filtro=== "todos"
-//         ? "selected"
-//         : ""
-//       }
-//   `}
-//   onClick={handleClickTodo}
-//   >Todos
-// </button>
-
-// {/* Filtro completados */}
-// <button
-//   className={`sinStyles
-//     ${filtro=== "completados"
-//         ? "selected"
-//         : ""
-//       }
-//   `}
-//   onClick={handleComplet}
-//   > Completados
-// </button>
-
-// {/* Filtro Activos */}
-// <button
-//     className={`sinStyles
-//     ${filtro=== "activos" 
-//           ? "selected"
-//           : ""}
-//     `}
-//     onClick={handleActive}
-//   > Activos
-// </button>
-
-// {/* Eliminar completados */}
-// <button className="sinStyles" onClick={deleteCompleted}>
-//   Eliminar completados
-// </button>
-
-
-
-
-
-            // const [error, setError] = useState(null);
-          // const [notificacion, setNotificacion] = useState({ type: null, message: '' });
-          // Función para mostrar notificaciones
-          // const mostrarNotificacion = (type, message) => {
-          //   setNotificacion({ type, message });
-          // };
-  //   if (!inputTarea.trim()) {
-  //     console.log("datos incorrectos", inputTarea);
-  //     Swal.fire({
-  //       title: "Error!",
-  //       text: "tienes que añadir una tarea",
-  //       icon: "error",
-  //       color: "#EDF0F3",
-  //       background: "#222323",
-  //       confirmButtonColor: "#1AB3E6",
-  //     });
-  //     return;
-  //   }

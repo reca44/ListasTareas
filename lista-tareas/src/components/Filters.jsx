@@ -1,14 +1,7 @@
-const Filters = ({
-filtro,
-onClickTodo,
-onClickComplet,
-onClickActive,
-onClickDelete,
-onClickHight,
-onClickMedium,
-onClickLow
-}) => {
-// console.log("Filtro: ",filtro)
+import PropTypes from 'prop-types';
+
+const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow}) => {
+
 return (
     <>
     <span>Filtros: </span>
@@ -37,7 +30,6 @@ return (
     </button>
 
     {/*<-------------- Filtros prioridades -------------->*/}
-    {/* Filtro onClickHight */}
     <button
         className={`sinStyles ${filtro === "hight" ? "selected" : ""}`}
         onClick={onClickHight}
@@ -65,6 +57,17 @@ return (
     </button>
     </>
 );
+};
+// Validación de Props
+Filters.propTypes = {
+    filtro: PropTypes.string.isRequired,
+    onClickTodo: PropTypes.func.isRequired,
+    onClickComplet: PropTypes.func.isRequired,
+    onClickActive: PropTypes.func.isRequired,
+    onClickDelete: PropTypes.func.isRequired,
+    onClickHight: PropTypes.func.isRequired,
+    onClickMedium: PropTypes.func.isRequired,
+    onClickLow: PropTypes.func.isRequired
 };
 
 export default Filters;
