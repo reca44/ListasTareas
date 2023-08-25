@@ -5,33 +5,33 @@ import { CssBaseline, ScopedCssBaseline, ThemeProvider, createTheme, ToggleButto
 import './index.css';
 
 const darkTheme = createTheme({
-  palette: {
-      mode: 'dark',
-      primary: {
+palette: {
+    mode: 'dark',
+    primary: {
         main: '#000000', // Color principal para el modo oscuro
     },
     background: {
         default: '#121212', // Fondo para el modo oscuro
     },
     text: {
-      primary: '#ffffff', // Color del texto primario en modo oscuro
-  }
-  }
+    primary: '#ffffff', // Color del texto primario en modo oscuro
+}
+}
 });
 
 const lightTheme = createTheme({
-  palette: {
-      mode: 'light',
-      primary: {
+palette: {
+    mode: 'light',
+    primary: {
         main: '#1976D2', // Color principal para el modo claro
     },
     background: {
         default: '#F5F5F5', // Fondo para el modo claro
     },
     text: {
-      primary: '#000000', // Color del texto primario en modo claro
-  }
-  }
+    primary: '#000000', // Color del texto primario en modo claro
+}
+}
 });
 const RootComponent = () => {
     const [themeMode, setThemeMode] = useState('dark'); // Inicialmente en modo oscuro

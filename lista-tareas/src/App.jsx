@@ -34,7 +34,7 @@ function App() {
   const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
   let textTarea = " Tareas pendientes";
-  cuentaActivo == 1 ? (textTarea = " Tarea pendiente") : textTarea
+  cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
   
   useEffect(() => {
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
@@ -70,15 +70,17 @@ function App() {
       )
     );
   };
+  // Filtros con objetos
+  const filtroMap = {
+    todos: () => true,
+    completados: (item) => item.completado,
+    activos: (item) => !item.completado,
+    hight: (item) => item.priority === 'hight',
+    medium: (item) => item.priority === 'medium',
+    low: (item) => item.priority === 'low'
+  };
 
-  const tareasFiltradas = tareas.filter((item) => {
-    if (filtro === 'todos') return true;
-    if (filtro === 'completados') return item.completado;
-    if (filtro === 'activos') return !item.completado;
-    if (filtro === 'hight') return item.priority==='hight';
-    if (filtro === 'medium') return item.priority==='medium';
-    if (filtro === 'low') return item.priority==='low';
-  });
+  const tareasFiltradas = tareas.filter(filtroMap[filtro]);
 
   const handleClickTodo = () => {
     setFiltro('todos');

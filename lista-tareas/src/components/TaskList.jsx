@@ -1,14 +1,8 @@
 import { useState } from "react";
 import MySvg from "./MySvg";
-import * as React from "react";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import MyAlerts from "./MyAlerts";
 import PropTypes from 'prop-types';
 
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
 
 const TaskList = ({ tareas, onDeleteTask, onEditTask, onToggleComplete, filtro }) => {
 const [editingItemId, setEditingItemId] = useState(null);
@@ -26,7 +20,6 @@ const handleClose = (event, reason) => {
     if (reason === "clickaway") {
     return;
     }
-
     setOpen(false);
 };
 
@@ -132,11 +125,14 @@ return (
             ❌
             </button>
         </div>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={snackbarSeverity} sx={{ width: "100%" }}>
-                {snackbarMessage}
-            </Alert>
-        </Snackbar>
+        
+        {/* Compoennte Alertas*/}
+        <MyAlerts 
+            open={open}
+            message={snackbarMessage}
+            severity={snackbarSeverity}
+            onClose={handleClose}
+        />
         </li>
     ))}
     </ul>
