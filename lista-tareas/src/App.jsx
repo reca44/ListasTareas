@@ -148,6 +148,7 @@ function App() {
           onDeleteTask={eliminarTarea}
           onEditTask={editarTarea}
           onToggleComplete={completarTarea}
+          filtro={filtro}
         />
 
         {/* Componente Filtros */}

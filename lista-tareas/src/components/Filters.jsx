@@ -64,6 +64,7 @@ return (
 );
 };
 // Validación de Props
+
 Filters.propTypes = {
     filtro: PropTypes.string.isRequired,
     onClickTodo: PropTypes.func.isRequired,
@@ -72,7 +73,9 @@ Filters.propTypes = {
     onClickDelete: PropTypes.func.isRequired,
     onClickHight: PropTypes.func.isRequired,
     onClickMedium: PropTypes.func.isRequired,
-    onClickLow: PropTypes.func.isRequired
+    onClickLow: PropTypes.func.isRequired,
+    onClickOrderPriority: PropTypes.func.isRequired,
+    onClickFirstCompleted: PropTypes.func.isRequired,
 };
 
 export default Filters;

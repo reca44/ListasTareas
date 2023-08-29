@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MySvg from "./MySvg";
 import MyAlerts from "./MyAlerts";
+import PropTypes from 'prop-types';
 
 const Task = ({item, onToggleComplete, onEditTask, onDeleteTask, filter})=> {
 // console.log(item)
@@ -134,6 +135,19 @@ return (
         />
     </li>
 );
+};
+Task.propTypes = {
+    item: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        tarea: PropTypes.string.isRequired,
+        contenido: PropTypes.string.isRequired,
+        priority: PropTypes.oneOf(['low', 'medium', 'hight']).isRequired,
+        completado: PropTypes.bool.isRequired,
+        }).isRequired,
+    onToggleComplete: PropTypes.func.isRequired,
+    onEditTask: PropTypes.func.isRequired,
+    onDeleteTask: PropTypes.func.isRequired,
+    filter: PropTypes.string.isRequired,
 };
 
 export default Task;
