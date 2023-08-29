@@ -3,6 +3,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import Filters from './components/Filters';
 import TaskCounter from './components/TaskCounter';
+import MyAlerts from './components/MyAlerts';
 
 
 function App() {
@@ -34,6 +35,10 @@ function App() {
   const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
   const [orden, setOrden] = useState('default'); // 'default', 'completadasPrimero', 'prioridad'
+  // notificacion de alertas
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackSeverity] = useState("");
 
   let textTarea = " Tareas pendientes";
   cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
@@ -43,6 +48,13 @@ function App() {
   }, [tareas]);
 
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+    return;
+    }
+    setOpen(false);
+};
+
   // Función para agregar tarea
   const agregarTarea = (nuevaTarea) => {
     setTareas([nuevaTarea, ...tareas]);
@@ -50,9 +62,14 @@ function App() {
 
   // Función para Editar tarea
   const editarTarea = (tareaEditada) => {
-    const arrayEditado = tareas.map((item) =>
-    item.id === tareaEditada.id ? tareaEditada : item);
-    setTareas(arrayEditado);
+    // console.log(tareaEditada.completado)
+      const arrayEditado = tareas.map((item) =>
+      item.id === tareaEditada.id ? tareaEditada : item);
+      setTareas(arrayEditado);
+      setSnackbarMessage("Tarea Actualizada")
+      setSnackSeverity("success")
+      setOpen(true);
+    
     // console.log("TareaEditada", tareaEditada);
     // console.log("arrayEditado:::", arrayEditado);
   };
@@ -61,6 +78,9 @@ function App() {
   const eliminarTarea = (idTarea) => {
     const arrayFiltrado = tareas.filter((item) => item.id !== idTarea);
     setTareas(arrayFiltrado);
+    setSnackbarMessage("Tarea Eliminada")
+    setSnackSeverity("info")
+    setOpen(true);
     //  mostrarNotificacion("success", "Tarea eliminada con éxito");
   };
 
@@ -100,6 +120,7 @@ function App() {
     }
   });
 
+  // console.log(tareasFiltradas)
 
 
   const handleClickTodo = () => {
@@ -167,6 +188,12 @@ function App() {
 
         {/* Componente con tareas pendientes*/}
         <TaskCounter cuentaActivo={cuentaActivo} />
+        <MyAlerts 
+            open={open}
+            message={snackbarMessage}
+            severity={snackbarSeverity}
+            onClose={handleClose}
+        />
         {/* <Notification type={notificacion.type} message={notificacion.message} /> */}
       </div>
     </div>

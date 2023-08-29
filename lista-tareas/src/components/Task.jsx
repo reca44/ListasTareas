@@ -41,7 +41,6 @@ const handleSave = () => {
     const updatedTarea = { ...item, tarea: editedTarea ,contenido: editedContent, priority: editedPriority }; // Crear una nueva tarea con el valor editado
     onEditTask(updatedTarea); 
     setEditingItemId(null); // fin modo  edición
-    handleClick("Tarea Actualizada", "success");
 };
 
 
@@ -113,15 +112,17 @@ return (
                 className="btn btn-warning mx-2"
                 onClick={() => {
                     // Verifica si la tarea no está completada
-                    !item.completado
-                    ? setEditingItemId(item.id)
-                    : handleClick("No puedes editar una tarea completada", "error");
-                    }}
+                    if (!item.completado) {
+                        setEditingItemId(item.id);
+                    } else {
+                        handleClick("No puedes editar una tarea completada", "error");
+                    }
+                }}
                 >
                 Editar
             </button>
             )}
-            <button className="btn btn-danger" onClick={() => { handleClick("Tarea Eliminada","info"); onDeleteTask(item.id); }}>
+            <button className="btn btn-danger" onClick={() => onDeleteTask(item.id)}>
             ❌
             </button>
         </div>

@@ -16,7 +16,7 @@ return (
         filter = {filtro}
     />
     ))}
-</ul>
+    </ul>
 );
 };
 
