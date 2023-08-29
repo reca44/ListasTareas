@@ -81,8 +81,8 @@ return (
 };
 
 // Validación de Props
-// TaskForm.propTypes = {
-//     onAddTask: PropTypes.func.isRequired
-// };
+TaskForm.propTypes = {
+    onAddTask: PropTypes.func.isRequired
+};
 
 export default TaskForm;
