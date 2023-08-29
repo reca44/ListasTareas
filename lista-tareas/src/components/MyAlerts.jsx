@@ -19,12 +19,12 @@ return (
 };
 
 // Validación de Props
-MyAlerts.propTypes = {
-    open: PropTypes.bool.isRequired,
-    message: PropTypes.string.isRequired,
-    severity: PropTypes.oneOf(['success', 'error', 'info', 'warning']).isRequired,
-    onClose: PropTypes.func.isRequired,
-};
+// MyAlerts.propTypes = {
+//     open: PropTypes.bool.isRequired,
+//     message: PropTypes.string.isRequired,
+//     severity: PropTypes.oneOf(['success', 'error', 'info', 'warning']).isRequired,
+//     onClose: PropTypes.func.isRequired,
+// };
 
 
 export default MyAlerts;

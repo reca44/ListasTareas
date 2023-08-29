@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
-const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow}) => {
+const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow, 
+                onClickOrderPriority, onClickFirstCompleted}) => {
 
 return (
     <>
@@ -55,6 +56,10 @@ return (
     <button className="sinStyles" onClick={onClickDelete}>
         {"Eliminar completados"}
     </button>
+    {/* filtros de orden (prioridad) */}
+    <button className='sinStyles' onClick={onClickOrderPriority}>Ordenar por prioridad</button>
+    {/* filtros de orden (Completados)*/}
+    <button className='sinStyles' onClick={onClickFirstCompleted}>Completados primero</button>
     </>
 );
 };

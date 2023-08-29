@@ -27,8 +27,6 @@ const handleSubmit = (e) => {
     // Vaciar el inputs
     setTarea(""); 
     setTitulo("");
-    setPriority("")
-    // Snackbar tarea añadida
     setSnackbarMessage("Tarea añadida!")
     setSnackSeverity("success")
     setOpen(true);
@@ -83,8 +81,8 @@ return (
 };
 
 // Validación de Props
-TaskForm.propTypes = {
-    onAddTask: PropTypes.func.isRequired
-};
+// TaskForm.propTypes = {
+//     onAddTask: PropTypes.func.isRequired
+// };
 
 export default TaskForm;

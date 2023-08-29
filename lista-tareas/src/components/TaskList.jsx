@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MySvg from "./MySvg";
 import MyAlerts from "./MyAlerts";
-import PropTypes from 'prop-types';
+
 
 
 const TaskList = ({ tareas, onDeleteTask, onEditTask, onToggleComplete, filtro }) => {
@@ -24,6 +24,7 @@ const handleClose = (event, reason) => {
 };
 
 return (
+    // TODO: revisar hay que crear mas componentes
     <ul className="list-group">
     {tareas.map((item) => (
         // <li className={` ${filtro === 'activo' && item.completado ? 'd-none' : 'd-block'}`} key={item.id}>
@@ -79,12 +80,12 @@ return (
             <select className="transparent" 
                 value={item.priority}
                 onChange={(e) => {
-                const updatedTareas = tareas.map((t) =>
-                t.id === item.id ? { ...t, priority: e.target.value } : t);
-                const tareaEditada = updatedTareas.find((t) => t.id === item.id);
-                // console.log(tareaEditada)
-                onEditTask(tareaEditada);
-            }}>
+                    const updatedTareas = tareas.map((t) =>
+                    t.id === item.id ? { ...t, priority: e.target.value } : t);
+                    const tareaEditada = updatedTareas.find((t) => t.id === item.id);
+                    // console.log(tareaEditada)
+                    onEditTask(tareaEditada);
+                }}>
                 <option className="text-info">
                     {"low"}
                 </option>
@@ -125,8 +126,8 @@ return (
             ❌
             </button>
         </div>
-        
-        {/* Compoennte Alertas*/}
+
+        {/* Componente Alertas*/}
         <MyAlerts 
             open={open}
             message={snackbarMessage}
@@ -139,12 +140,12 @@ return (
 );
 };
 // Validación de Props
-TaskList.propTypes = {
-    tareas: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onDeleteTask: PropTypes.func.isRequired,
-    onEditTask: PropTypes.func.isRequired,
-    onToggleComplete: PropTypes.func.isRequired,
-    filtro: PropTypes.string.isRequired
-};
+// TaskList.propTypes = {
+//     tareas: PropTypes.arrayOf(PropTypes.object).isRequired,
+//     onDeleteTask: PropTypes.func.isRequired,
+//     onEditTask: PropTypes.func.isRequired,
+//     onToggleComplete: PropTypes.func.isRequired,
+//     filtro: PropTypes.string.isRequired
+// };
 
 export default TaskList;

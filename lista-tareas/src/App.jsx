@@ -33,6 +33,8 @@ function App() {
   const [tareas, setTareas] = useState(estadoInicio);
   const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
+  const [orden, setOrden] = useState('default'); // 'default', 'completadasPrimero', 'prioridad'
+
   let textTarea = " Tareas pendientes";
   cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
   
@@ -80,16 +82,32 @@ function App() {
     low: (item) => item.priority === 'low'
   };
 
-  const tareasFiltradas = tareas.filter(filtroMap[filtro]);
+  // const tareasFiltradas = tareas.filter(filtroMap[filtro]);
+
+  // Ordenar por prioridad
+  const tareasFiltradas = tareas.filter(filtroMap[filtro]).sort((a, b) => {
+    if (orden === 'porPrioridad') {
+      const priorityOrder = ['hight', 'medium', 'low'];
+      return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
+    } else if(orden==='firstCompleted'){
+      if(a.completado && !b.completado){
+        return -1;
+      }else if(!a.completado && b.completado){
+        return 1;
+      }
+    } else{
+      return 0;
+    }
+  });
+
+
 
   const handleClickTodo = () => {
     setFiltro('todos');
   };
-
   const handleComplet = () => {
     setFiltro('completados');
   };
-
   const handleActive = () => {
     setFiltro('activos');
   };
@@ -101,6 +119,12 @@ function App() {
   };
   const handleLow = () => {
     setFiltro('low');
+  };
+  const handlePriotity = () => {
+    setOrden('porPrioridad');
+  };
+  const handleFirsCompleted = () => {
+    setOrden('firstCompleted');
   };
 
   const deleteCompleted = () => {
@@ -136,6 +160,8 @@ function App() {
           onClickMedium={handleMedium}
           onClickLow={handleLow}
           onClickDelete={deleteCompleted}
+          onClickOrderPriority={handlePriotity}
+          onClickFirstCompleted={handleFirsCompleted}
         />
 
         {/* Componente con tareas pendientes*/}
