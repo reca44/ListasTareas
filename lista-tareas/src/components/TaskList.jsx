@@ -1,20 +1,21 @@
 import Task from './Task';
 import PropTypes from 'prop-types'
 
-const TaskList = ({ tareas, onDeleteTask, onEditTask, onToggleComplete, filtro }) => {
+const TaskList = ({ tareas, onDeleteTask, onToggleComplete, filtro, onToggleList, onOpenModal, setId}) => {
 
 
 return (
-    <ul className="list-group">
+    <ul className={`${!onToggleList ? 'tasksList mt-4 grid gap-2 sm:gap-4 xl:gap-6 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 items-end': 'tasksList mt-4 grid gap-2 sm:gap-4 xl:gap-6 grid-cols-1'}`}>
     {tareas.map((item) => (
-    <Task
-        key={item.id}
-        item={item}
-        onToggleComplete={onToggleComplete}
-        onEditTask={onEditTask}
-        onDeleteTask={onDeleteTask}
-        filter = {filtro}
-    />
+        <Task
+            key={item.id}
+            item={item}
+            onToggleComplete={onToggleComplete}
+            onDeleteTask={onDeleteTask}
+            filter = {filtro}
+            onOpenModal= {onOpenModal}
+            setId = {setId}
+        />
     ))}
     </ul>
 );
@@ -31,7 +32,6 @@ TaskList.propTypes = {
         })).isRequired,
 
     onDeleteTask: PropTypes.func.isRequired,
-    onEditTask: PropTypes.func.isRequired,
     onToggleComplete: PropTypes.func.isRequired,
     filtro: PropTypes.string.isRequired,
 };

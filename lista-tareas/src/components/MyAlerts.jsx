@@ -18,18 +18,12 @@ return (
 );
 };
 
-// MyAlerts.propTypes = {
-//     open: PropTypes.bool.isRequired,
-//     message: PropTypes.string.isRequired,
-//     severity: PropTypes.oneOf(["error", "warning", "info", "success"]).isRequired,
-//     onClose: PropTypes.func.isRequired
-// };
+MyAlerts.propTypes = {
+    open: PropTypes.bool.isRequired,
+    message: PropTypes.string.isRequired,
+    severity: PropTypes.oneOf(["error", "warning", "info", "success"]).isRequired,
+    onClose: PropTypes.func.isRequired
+};
 
 
 export default MyAlerts;
-
-
-/* <Alert severity="error">This is an error message!</Alert>
-<Alert severity="warning">This is a warning message!</Alert>
-<Alert severity="info">This is an information message!</Alert>
-<Alert severity="success">This is a success message!</Alert> */

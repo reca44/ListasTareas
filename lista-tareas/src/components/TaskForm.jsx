@@ -23,7 +23,7 @@ const handleSubmit = (e) => {
     }
 
     // console.log("Agregando tarea:", inputTarea);
-    onAddTask({ id: Date.now(), tarea: inputTitulo,contenido: inputTarea, completado: false, priority: priority });
+    onAddTask({ id: crypto.randomUUID(), tarea: inputTitulo,contenido: inputTarea, completado: false, priority: priority });
     // Vaciar el inputs
     setTarea(""); 
     setTitulo("");

@@ -1,66 +1,75 @@
 import PropTypes from 'prop-types';
 
-const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow, 
-                onClickOrderPriority, onClickFirstCompleted}) => {
+const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow}) => {
 
 return (
-    <>
-    <span>Filtros: </span>
-    {/* // Filtros: Todos  */}
-    <button
-        className={`sinStyles mx-2 ${filtro === "todos" ? "selected" : ""}`}
-        onClick={onClickTodo}
-    >
-        {"Todos"}
-    </button>
+    <ul className='grid gap-2'>
+        {/* // Filtros: Todos  */}
+        {/* old classname, eliminar filtros?? */}
+        {/* className={`sinStyles ${filtro === "completados" ? "selected" : ""}`} */}
+        <li>
+            <button
+                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
+                onClick={onClickTodo}
+                >
+                Todos
+            </button>
+        </li>
+        {/* Filtro completados */}
+        <li>
+            <button
+                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
+                onClick={onClickComplet}
+                >
+                {"Completados"}
+            </button> 
+        </li>
+        
 
-    {/* Filtro completados */}
-    <button
-        className={`sinStyles ${filtro === "completados" ? "selected" : ""}`}
-        onClick={onClickComplet}
-    >
-        {"Completados"}
-    </button>
+        {/* Filtro Activos */}
+        <li>
+            <button
+                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
+                onClick={onClickActive}
+            >
+                {"Activos"}
+            </button>
+        </li>
 
-    {/* Filtro Activos */}
-    <button
-        className={`sinStyles ${filtro === "activos" ? "selected" : ""}`}
-        onClick={onClickActive}
-    >
-        {"Activos"}
-    </button>
-
-    {/*<-------------- Filtros prioridades -------------->*/}
-    <button
-        className={`sinStyles ${filtro === "hight" ? "selected" : ""}`}
-        onClick={onClickHight}
-    >
-        {"Hight"}
-    </button>
-    {/* Filtro onClickMedium */}
-    <button
-        className={`sinStyles ${filtro === "medium" ? "selected" : ""}`}
-        onClick={onClickMedium}
-    >
-        {"Medium"}
-    </button>
-    {/* Filtro onClickLow */}
-    <button
-        className={`sinStyles ${filtro === "low" ? "selected" : ""}`}
-        onClick={onClickLow}
-    >
-        {"Low"}
-    </button>
-
-    {/* Eliminar completados */}
-    <button className="sinStyles" onClick={onClickDelete}>
-        {"Eliminar completados"}
-    </button>
-    {/* filtros de orden (prioridad) */}
-    <button className='sinStyles' onClick={onClickOrderPriority}>Ordenar por prioridad</button>
-    {/* filtros de orden (Completados)*/}
-    <button className='sinStyles' onClick={onClickFirstCompleted}>Completados primero</button>
-    </>
+        {/*<-------------- Filtros prioridades -------------->*/}
+        <li>
+            <button
+                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
+                onClick={onClickHight}
+            >
+                {"Hight"}
+            </button>
+        </li>
+        {/* Filtro onClickMedium */}
+        <li>
+            <button
+                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
+                onClick={onClickMedium}
+            >
+                {"Medium"}
+            </button>
+        </li>
+        {/* Filtro onClickLow */}
+        <li>
+            <button
+                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
+                onClick={onClickLow}
+            >
+                {"Low"}
+            </button>
+        </li>
+        {/* Eliminar completados */}
+        <li>
+            <button className="px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200" onClick={onClickDelete}>
+                {"Eliminar completados"}
+            </button>
+        </li>
+    </ul>
 );
 };
 // Validación de Props
@@ -74,8 +83,6 @@ Filters.propTypes = {
     onClickHight: PropTypes.func.isRequired,
     onClickMedium: PropTypes.func.isRequired,
     onClickLow: PropTypes.func.isRequired,
-    onClickOrderPriority: PropTypes.func.isRequired,
-    onClickFirstCompleted: PropTypes.func.isRequired,
 };
 
 export default Filters;
