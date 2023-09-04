@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow}) => {
+
+const [isActive, setUseActive] = useState("all")
+
+
 
 return (
     <ul className='grid gap-2'>
@@ -8,9 +13,17 @@ return (
         {/* old classname, eliminar filtros?? */}
         {/* className={`sinStyles ${filtro === "completados" ? "selected" : ""}`} */}
         <li>
+            
             <button
-                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
-                onClick={onClickTodo}
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'all'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                    onClick={() => {
+                    onClickTodo();
+                    setUseActive('all');
+                }}  
                 >
                 Todos
             </button>
@@ -18,8 +31,15 @@ return (
         {/* Filtro completados */}
         <li>
             <button
-                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
-                onClick={onClickComplet}
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'completed'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                onClick={() => {
+                    onClickComplet();
+                    setUseActive('completed');
+                }}  
                 >
                 {"Completados"}
             </button> 
@@ -29,8 +49,15 @@ return (
         {/* Filtro Activos */}
         <li>
             <button
-                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
-                onClick={onClickActive}
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'active'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                onClick={() => {
+                    onClickActive();
+                    setUseActive('active');
+                }}  
             >
                 {"Activos"}
             </button>
@@ -39,8 +66,15 @@ return (
         {/*<-------------- Filtros prioridades -------------->*/}
         <li>
             <button
-                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
-                onClick={onClickHight}
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'hight'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                onClick={() => {
+                    onClickHight();
+                    setUseActive('hight');
+                }}  
             >
                 {"Hight"}
             </button>
@@ -48,8 +82,15 @@ return (
         {/* Filtro onClickMedium */}
         <li>
             <button
-                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
-                onClick={onClickMedium}
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'medium'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                onClick={() => {
+                    onClickMedium();
+                    setUseActive('medium');
+                }}  
             >
                 {"Medium"}
             </button>
@@ -57,15 +98,32 @@ return (
         {/* Filtro onClickLow */}
         <li>
             <button
-                className={"px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200"}
-                onClick={onClickLow}
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'low'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                onClick={() => {
+                    onClickLow();
+                    setUseActive('low');
+                }}
             >
                 {"Low"}
             </button>
         </li>
         {/* Eliminar completados */}
         <li>
-            <button className="px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200" onClick={onClickDelete}>
+            <button 
+                className={`px-4 py-2 w-full block transition hover:text-rose-600 dark:hover:text-slate-200 
+                ${isActive === 'delete'
+                        ? "text-rose-600 bg-violet-100 border-r-4 border-rose-500 dark:bg-slate-700/[.2] dark:text-slate-200 dark:border-slate-200"
+                        : ""
+                    }`}
+                onClick={() => {
+                onClickDelete();
+                    setUseActive('delete');
+                }}
+            >
                 {"Eliminar completados"}
             </button>
         </li>

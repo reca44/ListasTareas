@@ -15,6 +15,7 @@ function App() {
       tarea: "prueba1",
       contenido: "contenido tarea prueba1 tatatatat",
       completado: false,
+      important: true,
       priority: 'low'
     },
     {
@@ -22,6 +23,7 @@ function App() {
       tarea: "pruebados",
       contenido: "contenido tarea pruebados tatatatat",
       completado: true,
+      important:false,
       priority: 'medium'
     },
     {
@@ -29,6 +31,7 @@ function App() {
       tarea: "otraMas",
       contenido: "contenido tarea otraMas tatatatat",
       completado: true,
+      important: false,
       priority: 'hight'
     },
   ];
@@ -40,16 +43,17 @@ function App() {
   // notificacion de alertas
   const [open, setOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackSeverity] = useState("");
+  const [snackbarSeverity, setSnackSeverity] = useState("success");
   const [list, setList] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editingItemId, setEditingItemId] = useState(null);
+  const [cuentaImportant, setCuentaImportant] = useState(0)
 
   let textTarea = " Tareas pendientes";
   cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
-  
   useEffect(() => {
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
+    setCuentaImportant(tareas.filter((tarea) => tarea.important).length);
   }, [tareas]);
 
 
@@ -71,7 +75,7 @@ function App() {
 
   // Función para Editar tarea
   const editarTarea = (tareaEditada) => {
-    console.log(tareaEditada)
+    // console.log(tareaEditada)
       const arrayEditado = tareas.map((item) =>
       item.id === tareaEditada.id ? tareaEditada : item);
       setTareas(arrayEditado);
@@ -79,7 +83,7 @@ function App() {
       setSnackSeverity("success")
       setOpen(true);
       setEditingItemId(null)
-      console.log(tareas)
+      // console.log(tareas)
   };
 
   // Función para eliminar tarea
@@ -96,6 +100,14 @@ function App() {
     setTareas((tareas) =>
       tareas.map((tarea) =>
         tarea.id === idTarea ? { ...tarea, completado: !tarea.completado } : tarea
+      )
+    );
+  };
+  // Función para marcar tarea como importante
+  const importantTask = (idTarea) => {
+    setTareas((tareas) =>
+      tareas.map((tarea) =>
+        tarea.id === idTarea ? { ...tarea, important: !tarea.important } : tarea
       )
     );
   };
@@ -122,9 +134,13 @@ function App() {
       }else if(!a.completado && b.completado){
         return 1;
       }
-    } else{
-      return 0;
-    }
+    } else if(orden==='firstImportant'){
+      if(a.important && !b.important){
+        return -1;
+      }else if(!a.important && b.important){
+        return 1;
+      }
+    } 
   });
 
   // Filtros
@@ -148,12 +164,14 @@ function App() {
   };
 
   const handleOrder = (e) => {
-    console.log(e.target.value)
     const select = e.target.value
     if(select === 'firstCompleted'){
       setOrden('firstCompleted');
-    }else if(select === 'porPrioridad')
+    }else if(select === 'porPrioridad'){
       setOrden('porPrioridad');
+    }else if(select==='firstImportant'){
+      setOrden('firstImportant');
+    }
   };
 
   const deleteCompleted = () => {
@@ -265,8 +283,7 @@ function App() {
           </div>
         </header>
         <section>
-          {/* TODO: implementar contador de tareas higth */}
-          <h1 className="font-medium my-5 text-center sm:text-left sm:my-8 md:text-2xl text-lg dark:text-slate-200">TODO: Tareas Importantes (2 High)</h1>
+          <h1 className="font-medium my-5 text-center sm:text-left sm:my-8 md:text-2xl text-lg dark:text-slate-200">Tareas Importantes: {cuentaImportant}</h1>
           <div className="flex children-styles">
             {/* TODO: hacer if para cambiar vista y clase (color seleccionada) */}
             <button title='ver listado' onClick={()=>setList(true)}>
@@ -293,6 +310,7 @@ function App() {
               tareas={tareasFiltradas}
               onDeleteTask={eliminarTarea}
               onToggleComplete={completarTarea}
+              onToggleImportant={importantTask}
               filtro={filtro}
               onToggleList={list}
               onOpenModal={handleModal}

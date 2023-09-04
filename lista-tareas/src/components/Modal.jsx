@@ -5,6 +5,7 @@ const [editedTarea, setEditedTarea] = useState('');
 const [editedContent, setEditedContent] = useState('');
 const [editedPriority, setEditedPriority] = useState('low');
 const [editedCompleted, setEditedCompleted] = useState(false);
+const [editedImportant, setEditedImportant] = useState(false);
 const [isEditing, setIsEditing] =useState(false);
 
 useEffect(() => {
@@ -14,12 +15,14 @@ useEffect(() => {
         setEditedContent(tareaEditando.contenido);
         setEditedPriority(tareaEditando.priority);
         setEditedCompleted(tareaEditando.completado)
+        setEditedImportant(tareaEditando.important)
         setIsEditing(true)
     } else {
         setEditedTarea('');
         setEditedContent('');
         setEditedPriority('Low'); 
         setEditedCompleted(false)
+        setEditedImportant(false)
         setIsEditing(false)
     }
 }, [editingId, tareas]);
@@ -34,13 +37,13 @@ const handleSubmit = (e) => {
         return;
     }
     if(!isEditing){
-        const addTarea = { id: crypto.randomUUID(), tarea: editedTarea,contenido: editedContent, completado: editedCompleted, priority: editedPriority }
+        const addTarea = { id: crypto.randomUUID(), tarea: editedTarea,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority }
         onAddTask(addTarea);
         setEditedContent("")
         setEditedTarea("")
         onOpenModal()
     }else{
-        const updatedTarea = {id:editingId, tarea: editedTarea ,contenido: editedContent, completado: editedCompleted, priority: editedPriority }; // Crear una nueva tarea con el valor editado
+        const updatedTarea = {id:editingId, tarea: editedTarea ,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority }; // Crear una nueva tarea con el valor editado
         onEditTask(updatedTarea); 
         onOpenModal()
     }
@@ -49,8 +52,9 @@ const handleSubmit = (e) => {
 const handleCompletChange = ()=>{
     setEditedCompleted(!editedCompleted)
 }
-
-
+const handleImportChange = ()=>{
+    setEditedImportant(!editedImportant)
+}
 
 return (
     <div id="modal">
@@ -75,7 +79,7 @@ return (
                     </label>
                     <label>
                         Fecha
-                        <input type="date" className="w-full" min="2023-8-31" max="2024-8-31" value="2023-8-31" />
+                        <input type="date" className="w-full" min="2023-8-31" max="2024-8-31" defaultValue="2023-8-31" />
                     </label>
                     <label>
                         Contenido
@@ -95,8 +99,12 @@ return (
                     </label>
 
                     <label className="mb-0 flex items-center cursor-pointer">
-                        <div className="mr-2 bg-slate-300/[.5] dark:bg-slate-800 w-5 h-5 rounded-full grid place-items-center border border-slate-300 dark:border-slate-700"></div>
-                        <span className="order-1 flex-1">Marcar como importante</span>
+                        <div className="mr-2 bg-slate-300/[.5] dark:bg-slate-800 w-5 h-5 rounded-full grid place-items-center border border-slate-300 dark:border-slate-700">
+                        {editedImportant && (
+                            <span className="bg-rose-500 w-2 h-2 block rounded-full"></span>
+                            )}
+                        </div>
+                        <span onClick={handleImportChange} className="order-1 flex-1">Marcar como importante</span>
                         <input type="checkbox" className="sr-only" />
                     </label>
 

@@ -1,7 +1,7 @@
 import MySvg from "./MySvg";
 import PropTypes from 'prop-types';
 
-const Task = ({item, onToggleComplete, onDeleteTask, filter, onOpenModal, setId})=> {
+const Task = ({item, onToggleComplete, onToggleImportant, onDeleteTask, filter, onOpenModal, setId})=> {
 
 let textCompleted = " Completado";
 !item.completado ? (textCompleted = " No Completado") : textCompleted
@@ -12,7 +12,7 @@ let textCompleted = " Completado";
 return (
     
     <li className={`list-group-item ${filter === 'activo' && item.completado ? 'd-none' : 'd-block'}`} key={item.id}>
-        {/* Prioridad */}
+        {/*Color Prioridad */}
         <a title="Main" className={`ml-auto mr-4 w-min whitespace-nowrap overflow-hidden max-w-[10rem] text-center text-ellipsis
                                     text-rose-600 px-4 py-1 rounded-t-md transition font-semibold
                                     dark:text-slate-200 block hover:bg-rose-300 dark:hover:bg-rose-500 
@@ -56,6 +56,7 @@ return (
                     {/* Input Check Completado Tarea */}
                     <div className="checkbox-wrapper-31 flex items-center">
                         <input
+                            title="Marcar como completado"
                             id={`completado-${item.id}`}
                             checked={item.completado}
                             type="checkbox"
@@ -69,10 +70,10 @@ return (
                     </label>
                     {/* TODO: implementar atributo important */}
                     {/* TODO: incluir onclick para cambiar estado important */}
-                    <button title="mark as important" className="transition hover:text-slate-700 dark:hover:text-slate-200 ml-auto">
+                    <button onClick={()=>onToggleImportant(item.id)} title="Marcar como importante" className="transition hover:text-slate-700 dark:hover:text-slate-200 ml-auto">
                         {/* TODO: incluir important y cambiar por completado*/}
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" 
-                            className={`${item.completado ? "w-5 h-5 sm:w-6 sm:h-6 fill-rose-500 stroke-rose-500" : "w-5 h-5 sm:w-6 sm:h-6 fill-none"}`}>
+                            className={`${item.important ? "w-5 h-5 sm:w-6 sm:h-6 fill-rose-500 stroke-rose-500" : "w-5 h-5 sm:w-6 sm:h-6 fill-none"}`}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"></path>
                         </svg>
                     </button>
@@ -85,6 +86,7 @@ return (
                     </button>
                     {/* Button Edit */}
                     <button
+                        title="Editar tarea"
                         className=""
                         onClick={() => {onOpenModal();setId(item.id);}}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512" fill="currentColor" className="w-4 sm:w-5 h-4 sm:h-5">

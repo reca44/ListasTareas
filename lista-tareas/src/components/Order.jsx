@@ -5,6 +5,7 @@ const Order = ({ onChangeOrder }) => {
         <option value="default" disabled>Orden por defecto</option>
         <option value="porPrioridad">Ordenar por prioridad</option>
         <option value="firstCompleted">Completados primero</option>
+        <option value="firstImportant">Importantes primero</option>
     </select>
     );
 };

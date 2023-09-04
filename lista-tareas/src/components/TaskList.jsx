@@ -1,7 +1,7 @@
 import Task from './Task';
 import PropTypes from 'prop-types'
 
-const TaskList = ({ tareas, onDeleteTask, onToggleComplete, filtro, onToggleList, onOpenModal, setId}) => {
+const TaskList = ({ tareas, onDeleteTask, onToggleComplete, onToggleImportant, filtro, onToggleList, onOpenModal, setId}) => {
 
 
 return (
@@ -11,6 +11,7 @@ return (
             key={item.id}
             item={item}
             onToggleComplete={onToggleComplete}
+            onToggleImportant={onToggleImportant}
             onDeleteTask={onDeleteTask}
             filter = {filtro}
             onOpenModal= {onOpenModal}
