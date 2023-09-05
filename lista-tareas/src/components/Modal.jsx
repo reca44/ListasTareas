@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 const Modal = ({onOpenModal,isOpen, tareas, onEditTask, editingId, onAddTask}) => {
 
 const [editedTarea, setEditedTarea] = useState('');
@@ -34,9 +36,8 @@ useEffect(() => {
         setIsEditing(false)
         setTextButton("Guardar tarea")
     }
-}, [editingId, tareas]);
+}, [editingId, tareas, formattedDateNum]);
     
-// console.log(isOpen)
 const handleSubmit = (e) => {
     e.preventDefault();
     const inputTarea = editedContent.trim();
@@ -46,12 +47,14 @@ const handleSubmit = (e) => {
         return;
     }
     if(!isEditing){
+        // Añadir tarea
         const addTarea = { id: crypto.randomUUID(), tarea: editedTarea,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority, date: editedDate, }
         onAddTask(addTarea);
         setEditedContent("")
         setEditedTarea("")
         onOpenModal()
     }else{
+        // Actualizar tarea
         const updatedTarea = {id:editingId, tarea: editedTarea ,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority, date: editedDate}; // Crear una nueva tarea con el valor editado
         onEditTask(updatedTarea); 
         onOpenModal()
@@ -85,21 +88,22 @@ return (
                         onChange={(e) => setEditedTarea(e.target.value)}
                         readOnly={false}/>
                     </label>
+                        {/* Input fecha tarea */}
                     <label>
                         Fecha
                         <input type="date" className="w-full" onChange={(e) => setEditedDate(e.target.value)} value={editedDate} />
                         
                     </label>
+                         {/* Contenido Tarea */}
                     <label>
                         Contenido
-                    {/* Contenido Tarea */}
                         <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} placeholder="Contenido/ descripcion de tu tarea" className="w-full">
                             
                         </textarea>
                     </label>
+                        {/* Select Priority */}
                     <label>
-                         {/* Select Priority */}
-                            Seleccionar prioridad
+                        Seleccionar prioridad
                         <select className="block w-full" value={editedPriority} onChange={(e) => setEditedPriority(e.target.value)}>
                             <option value="Low" className="bg-slate-100 dark:bg-slate-800">Low</option>
                             <option value="Medium" className="bg-slate-100 dark:bg-slate-800">Medium</option>
@@ -137,6 +141,24 @@ return (
     );
 };
 
+Modal.propTypes = {
+    onOpenModal: PropTypes.func.isRequired, // abrir el modal
+    isOpen: PropTypes.bool.isRequired, // modal abierto o no
+    tareas: PropTypes.arrayOf(
+    PropTypes.shape({
+        id: PropTypes.string.isRequired, // ID tarea
+        tarea: PropTypes.string.isRequired, // Titulo  tarea
+        contenido: PropTypes.string.isRequired, // Contenido tarea
+        priority: PropTypes.string.isRequired, // Prioridad  tarea
+        completado: PropTypes.bool.isRequired, //  tarea completada
+        important: PropTypes.bool.isRequired, // tarea importante
+        date: PropTypes.string.isRequired, // Fecha tarea 
+    })
+    ).isRequired, // Lista de tareas
+    onEditTask: PropTypes.func.isRequired, // editar una tarea
+    editingId: PropTypes.string, // id de la tarea que se esta editando (opcional si no se está editando)
+    onAddTask: PropTypes.func.isRequired, // agregar una tarea
+};
 
 
 export default Modal;

@@ -12,7 +12,7 @@ function App() {
   // incluir important y date
   const estadoInicio = [
     {
-      id: 1,
+      id: '1',
       tarea: "prueba1",
       contenido: "contenido tarea prueba1 tatatatat",
       completado: false,
@@ -21,7 +21,7 @@ function App() {
       date: '2023-09-05'
     },
     {
-      id: 2,
+      id: '2asa121',
       tarea: "pruebados",
       contenido: "contenido tarea pruebados tatatatat",
       completado: true,
@@ -30,7 +30,7 @@ function App() {
       date: '2023-08-04'
     },
     {
-      id: 3,
+      id: '3',
       tarea: "otraMas",
       contenido: "contenido tarea otraMas tatatatat",
       completado: true,
@@ -223,7 +223,6 @@ function App() {
           <nav>
             {/* Componente Filtros */}
             <Filters
-              filtro={filtro}
               onClickTodo={handleClickTodo}
               onClickComplet={handleComplet}
               onClickActive={handleActive}

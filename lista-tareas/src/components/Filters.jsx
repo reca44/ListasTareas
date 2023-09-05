@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const Filters = ({filtro,onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow}) => {
+const Filters = ({onClickTodo,onClickComplet,onClickActive,onClickDelete,onClickHight,onClickMedium,onClickLow}) => {
 
 const [isActive, setUseActive] = useState("all")
-
-
 
 return (
     <ul className='grid gap-2'>
@@ -133,7 +131,6 @@ return (
 // Validación de Props
 
 Filters.propTypes = {
-    filtro: PropTypes.string.isRequired,
     onClickTodo: PropTypes.func.isRequired,
     onClickComplet: PropTypes.func.isRequired,
     onClickActive: PropTypes.func.isRequired,
