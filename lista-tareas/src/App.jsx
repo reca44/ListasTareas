@@ -40,7 +40,9 @@ function App() {
     },
   ];
 
-  const [tareas, setTareas] = useState(estadoInicio);
+  // Obtenemos las tareas de localstorage siempre que existan, sino del array con datos de prueba
+  const localTask = localStorage.getItem("tareas");
+  const [tareas, setTareas] = useState(localTask ? JSON.parse(localTask) : estadoInicio);
   const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
   const [cuentaImportant, setCuentaImportant] = useState(0)
@@ -58,10 +60,15 @@ function App() {
 
   let textTarea = " Tareas pendientes";
   cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
+
+
+
+
   useEffect(() => {
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
     setCuentaImportant(tareas.filter((tarea) => tarea.important && !tarea.completado).length);
     setCuentaTask(tareas.filter((tarea) => tarea.id).length);
+    localStorage.setItem("tareas", JSON.stringify(tareas));
   }, [tareas]);
 
 
@@ -78,12 +85,10 @@ function App() {
     setSnackbarMessage("Tarea Guardada")
     setSnackSeverity("success")
     setOpen(true);
-    // console.log(tareas)
   };
 
   // Función para Editar tarea
   const editarTarea = (tareaEditada) => {
-    // console.log(tareaEditada)
       const arrayEditado = tareas.map((item) =>
       item.id === tareaEditada.id ? tareaEditada : item);
       setTareas(arrayEditado);
@@ -91,7 +96,6 @@ function App() {
       setSnackSeverity("success")
       setOpen(true);
       setEditingItemId(null)
-      // console.log(tareas)
   };
 
   // Función para eliminar tarea
@@ -110,6 +114,7 @@ function App() {
         tarea.id === idTarea ? { ...tarea, completado: !tarea.completado } : tarea
       )
     );
+
   };
   // Función para marcar tarea como importante
   const importantTask = (idTarea) => {
