@@ -1,5 +1,5 @@
 import Task from './Task';
-import PropTypes from 'prop-types'
+
 
 const TaskList = ({ tareas, onDeleteTask, onToggleComplete, onToggleImportant, filtro, onToggleList, onOpenModal, setId}) => {
 

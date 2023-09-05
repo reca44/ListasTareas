@@ -6,8 +6,11 @@ const [editedContent, setEditedContent] = useState('');
 const [editedPriority, setEditedPriority] = useState('low');
 const [editedCompleted, setEditedCompleted] = useState(false);
 const [editedImportant, setEditedImportant] = useState(false);
+const [editedDate, setEditedDate] = useState('')
 const [isEditing, setIsEditing] =useState(false);
 const [textButton, setTextButton] = useState("Guardar tarea");
+const currentDate = new Date();
+const formattedDateNum = currentDate.toISOString().split('T')[0];
 
 
 useEffect(() => {
@@ -18,6 +21,7 @@ useEffect(() => {
         setEditedPriority(tareaEditando.priority);
         setEditedCompleted(tareaEditando.completado)
         setEditedImportant(tareaEditando.important)
+        setEditedDate(tareaEditando.date)
         setIsEditing(true)
         setTextButton("Actualizar tarea")
     } else {
@@ -25,6 +29,7 @@ useEffect(() => {
         setEditedContent('');
         setEditedPriority('Low'); 
         setEditedCompleted(false)
+        setEditedDate(formattedDateNum)
         setEditedImportant(false)
         setIsEditing(false)
         setTextButton("Guardar tarea")
@@ -41,13 +46,13 @@ const handleSubmit = (e) => {
         return;
     }
     if(!isEditing){
-        const addTarea = { id: crypto.randomUUID(), tarea: editedTarea,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority }
+        const addTarea = { id: crypto.randomUUID(), tarea: editedTarea,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority, date: editedDate, }
         onAddTask(addTarea);
         setEditedContent("")
         setEditedTarea("")
         onOpenModal()
     }else{
-        const updatedTarea = {id:editingId, tarea: editedTarea ,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority }; // Crear una nueva tarea con el valor editado
+        const updatedTarea = {id:editingId, tarea: editedTarea ,contenido: editedContent, completado: editedCompleted, important:editedImportant, priority: editedPriority, date: editedDate}; // Crear una nueva tarea con el valor editado
         onEditTask(updatedTarea); 
         onOpenModal()
     }
@@ -82,7 +87,8 @@ return (
                     </label>
                     <label>
                         Fecha
-                        <input type="date" className="w-full" min="2023-8-31" max="2024-8-31" defaultValue="2023-8-31" />
+                        <input type="date" className="w-full" onChange={(e) => setEditedDate(e.target.value)} value={editedDate} />
+                        
                     </label>
                     <label>
                         Contenido

@@ -17,7 +17,8 @@ function App() {
       contenido: "contenido tarea prueba1 tatatatat",
       completado: false,
       important: true,
-      priority: 'Low'
+      priority: 'Low',
+      date: '2023-09-05'
     },
     {
       id: 2,
@@ -25,7 +26,8 @@ function App() {
       contenido: "contenido tarea pruebados tatatatat",
       completado: true,
       important:false,
-      priority: 'Medium'
+      priority: 'Medium',
+      date: '2023-08-04'
     },
     {
       id: 3,
@@ -33,7 +35,8 @@ function App() {
       contenido: "contenido tarea otraMas tatatatat",
       completado: true,
       important: false,
-      priority: 'Hight'
+      priority: 'Hight',
+      date: '2023-08-23'
     },
   ];
 
@@ -47,8 +50,8 @@ function App() {
   const [open, setOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackSeverity] = useState("success");
-
-  const [list, setList] = useState(false); //cambiar vista
+ //cambiar vistas
+  const [list, setList] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editingItemId, setEditingItemId] = useState(null);
   const [isNotification, setIsNotification] = useState(false)
@@ -57,7 +60,7 @@ function App() {
   cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
   useEffect(() => {
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
-    setCuentaImportant(tareas.filter((tarea) => tarea.important).length);
+    setCuentaImportant(tareas.filter((tarea) => tarea.important && !tarea.completado).length);
     setCuentaTask(tareas.filter((tarea) => tarea.id).length);
   }, [tareas]);
 
@@ -196,6 +199,7 @@ function App() {
   const currentDate = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString('es-ES', options);
+  // console.log(formattedDateNum)
 
   return (
     <div className="bg-slate-200 min-h-screen text-slate-600 dark:bg-slate-900 dark:text-slate-400 xl:text-base sm:text-sm text-xs">
@@ -243,7 +247,7 @@ function App() {
           <div className="flex-1 col-span-3 row-start-2 md:pr-10">
             <form className="relative md:max-w-xs w-full" autoComplete='on'>
               <label htmlFor="search" className="sr-only"></label>
-              <input type="text" id="search" name="search" placeholder="Buscar..." className="inputStyles w-full"></input>
+              <input type="text" id="search" name="search" placeholder="TODO:Buscar..." className="inputStyles w-full"></input>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="absolute w-4 sm:w-5 right-4 top-3.5 text-slate-400">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
               </svg>
@@ -291,16 +295,16 @@ function App() {
           </div>
         </header>
         <section>
-          <h1 className="font-medium my-5 text-center sm:text-left sm:my-8 md:text-2xl text-lg dark:text-slate-200">Tareas Importantes: {cuentaImportant}</h1>
+          <h1 className="font-medium my-5 text-center sm:text-left sm:my-8 md:text-2xl text-lg dark:text-slate-200">Tareas Importantes (sin completar): {cuentaImportant}</h1>
           <div className="flex children-styles">
-            {/* TODO: hacer if para cambiar vista y clase (color seleccionada) */}
+            {/* cambiar vista y clase (color seleccionada) */}
             <button title='ver listado' onClick={()=>setList(true)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
                 className={`${list ? 'text-blue-600':""}`} >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path>
               </svg>
             </button>
-            {/* TODO: hacer if para cambiar vista */}
+            {/* Cambiar vista */}
             <button title='ver grilla' onClick={()=>setList(false)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" 
                 className={`${!list ? 'text-blue-600':""}`} >
