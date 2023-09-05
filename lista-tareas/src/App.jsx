@@ -5,6 +5,7 @@ import Order from './components/Order';
 import TaskCounter from './components/TaskCounter';
 import MyAlerts from './components/MyAlerts';
 import Modal from './components/modal';
+import DarkMode from './components/DarkMode';
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
       contenido: "contenido tarea prueba1 tatatatat",
       completado: false,
       important: true,
-      priority: 'low'
+      priority: 'Low'
     },
     {
       id: 2,
@@ -24,7 +25,7 @@ function App() {
       contenido: "contenido tarea pruebados tatatatat",
       completado: true,
       important:false,
-      priority: 'medium'
+      priority: 'Medium'
     },
     {
       id: 3,
@@ -32,28 +33,32 @@ function App() {
       contenido: "contenido tarea otraMas tatatatat",
       completado: true,
       important: false,
-      priority: 'hight'
+      priority: 'Hight'
     },
   ];
 
   const [tareas, setTareas] = useState(estadoInicio);
   const [filtro, setFiltro] = useState('todos');
   const [cuentaActivo, setCuentaActivo] = useState(0);
+  const [cuentaImportant, setCuentaImportant] = useState(0)
+  const [cuentaTask, setCuentaTask] = useState(0)
   const [orden, setOrden] = useState('default'); // 'default', 'completadasPrimero', 'prioridad'
   // notificacion de alertas
   const [open, setOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackSeverity] = useState("success");
-  const [list, setList] = useState(false);
+
+  const [list, setList] = useState(false); //cambiar vista
   const [openModal, setOpenModal] = useState(false);
   const [editingItemId, setEditingItemId] = useState(null);
-  const [cuentaImportant, setCuentaImportant] = useState(0)
+  const [isNotification, setIsNotification] = useState(false)
 
   let textTarea = " Tareas pendientes";
   cuentaActivo === 1 ? (textTarea = " Tarea pendiente") : textTarea
   useEffect(() => {
     setCuentaActivo(tareas.filter((tarea) => !tarea.completado).length);
     setCuentaImportant(tareas.filter((tarea) => tarea.important).length);
+    setCuentaTask(tareas.filter((tarea) => tarea.id).length);
   }, [tareas]);
 
 
@@ -116,9 +121,9 @@ function App() {
     todos: () => true,
     completados: (item) => item.completado,
     activos: (item) => !item.completado,
-    hight: (item) => item.priority === 'hight',
-    medium: (item) => item.priority === 'medium',
-    low: (item) => item.priority === 'low'
+    hight: (item) => item.priority === 'Hight',
+    medium: (item) => item.priority === 'Medium',
+    low: (item) => item.priority === 'Low'
   };
 
   // const tareasFiltradas = tareas.filter(filtroMap[filtro]);
@@ -126,22 +131,22 @@ function App() {
   // Ordenar por prioridad
   const tareasFiltradas = tareas.filter(filtroMap[filtro]).sort((a, b) => {
     if (orden === 'porPrioridad') {
-      const priorityOrder = ['hight', 'medium', 'low'];
+      const priorityOrder = ['Hight', 'Medium', 'Low'];
       return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
     } else if(orden==='firstCompleted'){
-      if(a.completado && !b.completado){
-        return -1;
-      }else if(!a.completado && b.completado){
-        return 1;
-      }
+        if(a.completado && !b.completado){
+          return -1;
+        }else if(!a.completado && b.completado){
+          return 1;
+        }
     } else if(orden==='firstImportant'){
-      if(a.important && !b.important){
-        return -1;
-      }else if(!a.important && b.important){
-        return 1;
-      }
+        if(a.important && !b.important){
+          return -1;
+        }else if(!a.important && b.important){
+          return 1;
+        }
     } 
-  });
+});
 
   // Filtros
   const handleClickTodo = () => {
@@ -193,7 +198,7 @@ function App() {
   const formattedDate = currentDate.toLocaleDateString('es-ES', options);
 
   return (
-    <div className="bg-slate-800 min-h-screen text-slate-600 dark:bg-slate-900 dark:text-slate-400 xl:text-base sm:text-sm text-xs">
+    <div className="bg-slate-200 min-h-screen text-slate-600 dark:bg-slate-900 dark:text-slate-400 xl:text-base sm:text-sm text-xs">
         <Modal 
             tareas={tareas}
             onEditTask={editarTarea}
@@ -234,7 +239,7 @@ function App() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"></path>
             </svg>
           </button>
-          {/* Search HEAD */}
+          {/*TODO: Search HEAD */}
           <div className="flex-1 col-span-3 row-start-2 md:pr-10">
             <form className="relative md:max-w-xs w-full" autoComplete='on'>
               <label htmlFor="search" className="sr-only"></label>
@@ -247,7 +252,7 @@ function App() {
           {/* Fecha HEAD */}
           <div className="text-center">
             <span className="text-slate-600 dark:text-slate-200 uppercase font-bold text-sm block xl:hidden">JIM TASK PHONE</span>
-            <time className="" dateTime={currentDate.toISOString()}>{formattedDate}</time>
+            <time dateTime={currentDate.toISOString()}>{formattedDate}</time>
           </div>
           {/* Notificacion HEAD */}
           <div className="flex flex-1">
@@ -259,6 +264,7 @@ function App() {
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 className="fill-blue-600 w-5 h-5 md:w-6 md:h-6 dark:fill-blue-800"
+                onClick={()=>{setIsNotification(!isNotification)}}
               >
                 <path
                   fillRule="evenodd"
@@ -268,7 +274,9 @@ function App() {
               </svg>
               </button>
               {/*Oculto. hacer visible si se desea implementar (quitar hidden) Div para mostrar notificaciones */}
-              <div className="hidden absolute bg-slate-100 dark:bg-slate-800 top-full rounded-md right-0 p-3 w-52 border border-slate-300 dark:border-slate-700"><p>Ejemplo notificacion.</p></div>
+              <div className={`${!isNotification ? 'hidden' : 'absolute bg-slate-100 dark:bg-slate-800 top-full rounded-md right-0 p-3 w-52 border border-slate-300 dark:border-slate-700'}`}>
+                <p>Ejemplo notificacion.</p>
+              </div>
             </div>
             <button onClick={()=>{
                           handleModal(); 
@@ -320,11 +328,15 @@ function App() {
       </main>
       <div className="bg-slate-100 h-screen w-60 xl:w-2/12 fixed dark:bg-slate-800 z-20 top-0 right-0 block">
         <section className="p-5 flex flex-col h-full">
-          TODO: darkmode
-          TODO: hacer select de tareas totales?
-          TODO: una vez implementado date, mostrar tareas con fecha de hoy 
+          <DarkMode />
+          
+
           {/* Componente con tareas pendientes*/}
-          <TaskCounter cuentaActivo={cuentaActivo} />
+          <TaskCounter
+            cuentaActivo={cuentaActivo} 
+            cuentaTask={cuentaTask} 
+            />
+            {'TODO: una vez implementado date, mostrar tareas con fecha de hoy '}
         </section>
       </div>
 

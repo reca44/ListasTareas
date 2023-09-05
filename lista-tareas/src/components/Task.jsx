@@ -16,9 +16,9 @@ return (
         <a title="Main" className={`ml-auto mr-4 w-min whitespace-nowrap overflow-hidden max-w-[10rem] text-center text-ellipsis
                                     text-rose-600 px-4 py-1 rounded-t-md transition font-semibold
                                     dark:text-slate-200 block hover:bg-rose-300 dark:hover:bg-rose-500 
-                                    ${item.priority === 'low' ? 'dark:bg-blue-600 bg-blue-600 dark:text-slate-950' 
-                                    : item.priority === 'medium' ? 'dark:bg-yellow-400 bg-yellow-400 dark:text-slate-950' 
-                                    : 'dark:bg-red-600 bg-red-600 dark:text-slate-950'}`}>
+                                    ${item.priority === 'Low' ? 'dark:bg-blue-600 bg-blue-400 dark:text-slate-950 text-slate-950' 
+                                    : item.priority === 'Medium' ? 'dark:bg-yellow-400 bg-yellow-400 dark:text-slate-950 text-slate-950' 
+                                    : 'dark:bg-red-600 bg-red-600 dark:text-slate-950 text-slate-950'}`}>
             {item.priority}
         </a>
 
@@ -36,13 +36,11 @@ return (
                     />
                 </div>
                 {/* Input Contenido Tarea */}
-                <input
+                <p
                     className={`description mb-2 text-slate-500 dark:text-slate-500 line-clamp-3 transparent`} 
-                    type="text"
                     style={{ textDecoration: item.completado ? "line-through" : "none" }}
-                    value={item.contenido}
-                    readOnly
-                />
+                    title={item.contenido}
+                >{item.contenido}</p>
 
                 {/* TODO: implementar atributo date */}
                 <time className="mt-auto flex w-full">
@@ -52,6 +50,7 @@ return (
                     30/08/2023
                 </time>
 
+                </div>
                 <div className="flex border-dashed border-slate-200 dark:border-slate-700/[.3] border-t-2 w-full pt-4 mt-4">
                     {/* Input Check Completado Tarea */}
                     <div className="checkbox-wrapper-31 flex items-center">
@@ -94,22 +93,9 @@ return (
                         </svg>
                     </button>
                 </div>
-            </div>
         </article>
     </li>
 );
-};
-Task.propTypes = {
-    item: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        tarea: PropTypes.string.isRequired,
-        contenido: PropTypes.string.isRequired,
-        priority: PropTypes.oneOf(['low', 'medium', 'hight']).isRequired,
-        completado: PropTypes.bool.isRequired,
-        }).isRequired,
-    onToggleComplete: PropTypes.func.isRequired,
-    onDeleteTask: PropTypes.func.isRequired,
-    filter: PropTypes.string.isRequired,
 };
 
 export default Task;

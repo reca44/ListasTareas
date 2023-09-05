@@ -7,6 +7,8 @@ const [editedPriority, setEditedPriority] = useState('low');
 const [editedCompleted, setEditedCompleted] = useState(false);
 const [editedImportant, setEditedImportant] = useState(false);
 const [isEditing, setIsEditing] =useState(false);
+const [textButton, setTextButton] = useState("Guardar tarea");
+
 
 useEffect(() => {
     const tareaEditando = tareas.find(tarea => tarea.id === editingId);
@@ -17,6 +19,7 @@ useEffect(() => {
         setEditedCompleted(tareaEditando.completado)
         setEditedImportant(tareaEditando.important)
         setIsEditing(true)
+        setTextButton("Actualizar tarea")
     } else {
         setEditedTarea('');
         setEditedContent('');
@@ -24,6 +27,7 @@ useEffect(() => {
         setEditedCompleted(false)
         setEditedImportant(false)
         setIsEditing(false)
+        setTextButton("Guardar tarea")
     }
 }, [editingId, tareas]);
     
@@ -60,7 +64,6 @@ return (
     <div id="modal">
         <div className={`xl:text-base sm:text-sm text-xs fixed bg-slate-600/[.2] w-full h-full z-40 place-items-center px-2 text-slate-600 dark:text-slate-200 ${isOpen ? "grid" : "hidden"}`}>
             <section className="relative bg-slate-200 max-w-lg w-full rounded-lg p-3 sm:p-5 flex flex-col justify-start dark:bg-slate-900">
-                {/* TODO: hacer funcionalidad de cerrar */}
                 <button onClick={onOpenModal} aria-label="close alert" className="absolute right-3 sm:right-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
@@ -92,9 +95,9 @@ return (
                          {/* Select Priority */}
                             Seleccionar prioridad
                         <select className="block w-full" value={editedPriority} onChange={(e) => setEditedPriority(e.target.value)}>
-                            <option value="low" className="bg-slate-100 dark:bg-slate-800">Low</option>
-                            <option value="medium" className="bg-slate-100 dark:bg-slate-800">Medium</option>
-                            <option value="hight" className="bg-slate-100 dark:bg-slate-800">Hight</option>
+                            <option value="Low" className="bg-slate-100 dark:bg-slate-800">Low</option>
+                            <option value="Medium" className="bg-slate-100 dark:bg-slate-800">Medium</option>
+                            <option value="Hight" className="bg-slate-100 dark:bg-slate-800">Hight</option>
                         </select>
                     </label>
 
@@ -118,16 +121,10 @@ return (
                         <span onClick={handleCompletChange}  className="order-1 flex-1">Marcar como completada</span>
                         <input type="checkbox" className="sr-only" />
                     </label>
-                    {isEditing ? (
-                        <button type="submit" className="btn mt-5">
-                            Actualizar tarea
-                        </button>
-                    ) : (
-                        <button type="submit" className="btn mt-5">
-                            Agregar tarea
-                        </button>
-                    )}
-                    </form>
+                    <button type="submit" className="btn mt-5">
+                        {textButton}
+                    </button>
+                </form>
             </section>
         </div>
     </div>
