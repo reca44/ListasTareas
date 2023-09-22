@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 const TaskCounter = ({ cuentaActivo, cuentaTask }) => {
 
 const completeTask = cuentaTask - cuentaActivo
-const porcentaje = completeTask / (cuentaTask/100)
+let porcentaje = completeTask / (cuentaTask/100)
+if(!porcentaje) porcentaje=0 
 const numeroFormateado = porcentaje.toFixed(0) + '%';
 const textTarea =`${completeTask} de ${cuentaTask} tareas completadas`
 const textActivos = cuentaActivo === 1 ? `Tienes ${cuentaActivo} tarea pendiente` : `Tienes ${cuentaActivo} tareas pendientes`;
